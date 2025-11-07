@@ -27,5 +27,3 @@ def check_kokushimusou(hands_set) -> bool:
 hands_set = {"first":["1p", "2p", "9s", "8m", "east", "east"], "second":{"4p", "1s"}}
 check_kokushimusou(hands_set)
 
-
-
