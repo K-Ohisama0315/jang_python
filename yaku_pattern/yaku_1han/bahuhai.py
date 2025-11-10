@@ -1,8 +1,12 @@
-def check_bahuhai(hand_set, bakaze) -> bool:
+def check_bahuhai(formed_hand, call, bakaze) -> bool:
     """
     手牌に場風牌が３枚以上あり、役が成立するか判定する
     """
-    hand = hand_set["hand"]
+    hand = formed_hand["hand"]
+
+    # 副露牌を手牌に追加
+    for tile in call:
+        hand.append(tile)
 
     # 場風牌が3枚以上あればTrueを返す
     for pair in hand:
@@ -13,3 +17,7 @@ def check_bahuhai(hand_set, bakaze) -> bool:
         if count >= 3:
             return True
     return False
+
+formed_hand = {"hand":[["1m","2m","3m"],["5s","6s","7s"],["6s","7s","8s"]],"head":["8m","8m"]}
+call = [["east","east","east"],]
+print(check_bahuhai(formed_hand, call, "east"))

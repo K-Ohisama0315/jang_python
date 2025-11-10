@@ -1,6 +1,6 @@
 import const
 
-def check_i_pe_ko(hand_set, menzen) -> bool:
+def check_i_pe_ko(formed_hand, menzen) -> bool:
     """
     手牌が一盃口か判定する
     """
@@ -10,8 +10,14 @@ def check_i_pe_ko(hand_set, menzen) -> bool:
 
     a = []
 
+    hand = formed_hand["hand"]
+
+    # 鳴いている場合（手牌が4枚未満の時）、Falseを返す
+    if len(hand) != 4:
+        return False
+
     # 手牌が三枚で構成されているか判定する
-    for pairs in hand_set["hand"]:
+    for pairs in hand:
         if len(pairs) == 3:
             a.append(pairs)
     
@@ -53,5 +59,6 @@ def check_i_pe_ko(hand_set, menzen) -> bool:
     else:
         return False
 
-hand_set = {"hand":[["1m","2m","3m"],["1m","2m","3m"],["5s","6s","7s"],["east","east","east"]],"head":["8m","8m"]}
-print(check_i_pe_ko(hand_set))
+formed_hand = {"hand":[["1m","2m","3m"],["1m","2m","3m"],["5s","6s","7s"],["east","east","east"]],"head":["8m","8m"]}
+menzen = True
+print(check_i_pe_ko(formed_hand, menzen))
