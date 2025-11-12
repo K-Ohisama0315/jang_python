@@ -5,13 +5,13 @@ def check_zihuhai(formed_hand, call, jikaze) -> bool:
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for tile in call:
-        hand.append(tile)
+    for mentsu in call:
+        hand.append(mentsu)
 
     # 自風牌が3枚以上あればTrueを返す
-    for pair in hand:
+    for mentsu in hand:
         count = 0
-        for tile in pair:
+        for tile in mentsu:
             if tile == jikaze:
                 count += 1
         if count >= 3:
