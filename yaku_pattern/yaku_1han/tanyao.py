@@ -11,7 +11,10 @@ def check_tanyao(formed_hand, call) -> bool:
 
     # アタマとそれ以外の手牌を一つのリストにまとめる
     hand.append(head)
-    hand.append(call)
+    
+    # 副露牌を手牌に追加
+    for tile in call:
+        hand.append(tile)
 
     # リスト内に么九牌がないか確認する
     for pair in hand:
