@@ -5,15 +5,15 @@ def check_sansyoku_doko(formed_hand, call) -> bool:
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for tile in call:
-        hand.append(tile)
+    for mentsu in call:
+        hand.append(mentsu)
 
     # 刻子を判定し、色と数字に分けた後タプルに代入して、それをリストに格納する
     kotsu_list = []
-    for pair in hand:
-        if pair[0] == pair[1] == pair[2]:
-            color = pair[0][0:1]
-            value = pair[0][1:2]
+    for mentsu in hand:
+        if mentsu[0] == mentsu[1] == mentsu[2]:
+            color = mentsu[0][0:1]
+            value = mentsu[0][1:2]
             kotsu_list.append((color, value))
     
     # 数字ごとに色を集合に格納し、それを辞書で表現する
