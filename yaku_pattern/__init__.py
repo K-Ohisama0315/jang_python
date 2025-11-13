@@ -6,7 +6,7 @@ from .yaku_1han.haku import check_haku
 from .yaku_2han.chiitoitsu import check_chiitoitsu
 
 # 役満
-# from .yakuman.kokushimusou import check_kokushimusou
+from .yakuman.kokushi_musou import check_kokushi_musou
 from .yakuman.chuuren_poutou import check_chuuren
 
 # initファイルで外部に公開する関数を定義
@@ -15,7 +15,7 @@ __all__ = [
     "check_haku",
 
     "check_chiitoitsu",
-    # "check_kokushimusou",
+    "check_kokushi_musou",
 
     "check_chuuren"
 ]
