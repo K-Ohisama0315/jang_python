@@ -33,9 +33,9 @@ rinshan = False			                #嶺上開花
 chankan = False			                #槍槓
 jikaze = "south"	                    #自風(east, south, west, north)
 bakaze = "east"	                        #場風(east, south, west, north)
-agari_tile = "4s"			            #アガリ牌
+agari_tile = "west"			            #アガリ牌
 display_dora_tiles = ["3m", "white"]	#ドラ表示牌
-hand_tiles = ["2p","2p","4s","white","6p","west","6p","1m","4s","3s","west","3s","1m","white"] 
+hand_tiles = ["south","9p","1s","9s","1p","west","west","east","north","red","1m","white","9m","green"] 
 call_tiles = []                         #鳴き牌
 
 situation_input:SituationInput = {
@@ -55,11 +55,14 @@ situation_input:SituationInput = {
     "call_tiles": call_tiles
 }
 
-# hand_tiles = ["5m", "7s", "white", "2p", "6m", "4p", "white", "7s", "3p", "4m", "white", "east", "east", "east"]
-# hand_tiles = ["1m", "1m", "1m", "1m", "2m", "2m", "2m", "2m", "3m", "3m", "3m", "3m", "4m", "4m"]
-# hand_tiles = ["7s","9s","5s","1s","8s","1s","9s","1s","6s","4s","9s","3s","6s","2s"]
-# hand_tiles = ["2p","2p","4s","white","6p","west","6p","1m","4s","3s","west","3s","1m","white"]
+# hand_tiles = ["5m", "7s", "white", "2p", "6m", "4p", "white", "7s", "3p", "4m", "white", "east", "east", "east"] # 白、東
+# hand_tiles = ["1m", "1m", "1m", "1m", "2m", "2m", "2m", "2m", "3m", "3m", "3m", "3m", "4m", "4m"] # 清一色、二盃口
+# hand_tiles = ["7s","9s","5s","1s","8s","1s","9s","1s","6s","4s","9s","3s","6s","2s"] # 九蓮宝燈
+# hand_tiles = ["2p","2p","4s","white","6p","west","6p","1m","4s","3s","west","3s","1m","white"] # 七対子
+# hand_tiles = ["south","9p","1s","9s","1p","west","west","east","north","red","1m","white","9m","green"] # 国士無双
+# hand_tiles = ["","","","","","","","","","","","","",""]
 
 
-#print("九蓮宝燈のやつ",check_chuuren(situation_input))
-print("七対子のやつ", check_chiitoitsu(situation_input))
+# print("九蓮宝燈のやつ",check_chuuren(situation_input))
+# print("七対子のやつ", check_chiitoitsu(situation_input))
+print("国士無双のやつ", check_kokushi_musou(situation_input))
