@@ -12,7 +12,6 @@ def find_head(hand_tiles):
 
     # 手牌の並び替え
     tiles_index.sort()
-    print(tiles_index)
 
     # 雀頭になりうる牌を抽出し集合(set型)に格納
     head_index_set = set([])
@@ -22,7 +21,6 @@ def find_head(hand_tiles):
 
     # 集合を配列に変換
     head_index = list(head_index_set)
-    print("head_index", head_index)
 
     # 雀頭とそれ以外に分けて格納する
     a = []
@@ -37,15 +35,15 @@ def find_head(hand_tiles):
 
     return a
 
+@lru_cache(None)
+def find_all_mentsu(frozen_counts):
 
-def find_all_mentsu(counts):
-
+    counts = collections.Counter(dict(frozen_counts))
     if not counts:
         return [[]]
 
     results = []
     t = min(counts.keys())
-    print(t)
 
     # 刻子探し
     if counts[t] >= 3:
@@ -57,7 +55,7 @@ def find_all_mentsu(counts):
             del new_counts[t]
         
         # 再起処理
-        sub_results = find_all_mentsu(new_counts)
+        sub_results = find_all_mentsu(frozenset(new_counts.items()))
         
         for r in sub_results:
             kotsu = [t, t, t]
@@ -75,26 +73,42 @@ def find_all_mentsu(counts):
             if new_counts[t + 1] == 0: del new_counts[t + 1]
             if new_counts[t + 2] == 0: del new_counts[t + 2]
 
-            sub_results = find_all_mentsu(new_counts)
+            sub_results = find_all_mentsu(frozenset(new_counts.items()))
 
             for r in sub_results:
                 syuntsu = [t, t + 1, t + 2]
                 results.append([syuntsu] + r)
-    print(results)
     return results
 
 def main_agari_process(hand_tiles):
     # 手牌の中から雀頭になりうる牌を取り出す
-    hand_head = find_head(hand_tiles["hand"])
+    hand_head = find_head(hand_tiles)
 
-    mentsu = []
-    for hand in hand_head:
-        print("main:", hand)
+    all_agari = []
+    unique_all_mentsu_set = set()
+    for i, hand in enumerate(hand_head):
+        # 牌をカウントのタプルに置き換える(1pが3つなら、"1p":3 みたいなイメージ)
         work_counts = collections.Counter(hand["work"])
-        mentsu.append(find_all_mentsu(work_counts))
-    
-    for a in mentsu:
-        for b in a:
-            print("mentsu",b)
+
+        # アガリの重複削除
+        all_mentsu_list = (find_all_mentsu(frozenset(work_counts.items())))
+        for mentsu_list in all_mentsu_list:
+            if len(mentsu_list) == 4:
+                tuple_mentsu = [tuple(m) for m in mentsu_list]
+                tuple_mentsu.sort()
+
+                full_tuple_mentsu = (tuple(tuple_mentsu), tuple(hand["head"]))
+                unique_all_mentsu_set.add(full_tuple_mentsu)
+
+    final_agari_list = []
+
+    for agari_tuple in unique_all_mentsu_set:
+        # タプルをリストに戻し、文字に変換する
+        agari_list = ([[const.tiles_swap[num] for num in list(m)] for m in agari_tuple[0]]), ([const.tiles_swap[num] for num in list(agari_tuple[1])])
+
+        agari_dict_str = {y: x for y, x in zip((["hand", "head"]), agari_list)}
+        final_agari_list.append(agari_dict_str)
+
+    return final_agari_list
         
 
