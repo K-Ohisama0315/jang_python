@@ -35,9 +35,10 @@ def find_head(hand_tiles):
 
     return a
 
+@lru_cache(None)
+def find_all_mentsu(frozen_counts):
 
-def find_all_mentsu(counts):
-
+    counts = collections.Counter(dict(frozen_counts))
     if not counts:
         return [[]]
 
@@ -54,7 +55,7 @@ def find_all_mentsu(counts):
             del new_counts[t]
         
         # 再起処理
-        sub_results = find_all_mentsu(new_counts)
+        sub_results = find_all_mentsu(frozenset(new_counts.items()))
         
         for r in sub_results:
             kotsu = [t, t, t]
@@ -72,7 +73,7 @@ def find_all_mentsu(counts):
             if new_counts[t + 1] == 0: del new_counts[t + 1]
             if new_counts[t + 2] == 0: del new_counts[t + 2]
 
-            sub_results = find_all_mentsu(new_counts)
+            sub_results = find_all_mentsu(frozenset(new_counts.items()))
 
             for r in sub_results:
                 syuntsu = [t, t + 1, t + 2]
@@ -90,7 +91,7 @@ def main_agari_process(hand_tiles):
         work_counts = collections.Counter(hand["work"])
 
         # アガリの重複削除
-        all_mentsu_list = (find_all_mentsu(work_counts))
+        all_mentsu_list = (find_all_mentsu(frozenset(work_counts.items())))
         for mentsu_list in all_mentsu_list:
             if len(mentsu_list) == 4:
                 tuple_mentsu = [tuple(m) for m in mentsu_list]
