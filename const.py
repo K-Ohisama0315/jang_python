@@ -12,21 +12,51 @@ tiles_swap = {v: k for k, v in tiles.items()}
 # 清一色であるかの判定を行う
 def find_full_flush(tiles_index):
     for index in tiles_index:
+        # 字牌が存在すればリターン
+        if (index > 30): 
+            return False
         # 一色では無ければリターン
         if (index // 10 != tiles_index[0] // 10): 
-            return None
-        
-    # 先頭が字牌なら字一色
-    if (tiles_index[0] > 30):
-        return "字一色"
+            return False
     
-    return "清一色"
+    return True
 
 # すべて么九牌かどうかの判定を行う
 def find_full_yaochu(tiles_index):
-
-    # 中張牌が含まれる場合はFalse
-    if any((index < 30 and (index % 10 not in (1,9))) for index in tiles_index):
-        return False
+    for index in tiles_index:
+        # 中張牌はFalse
+        if (index < 30 and (index % 10 not in (1,9))):
+            return False
     
     return True
+
+# 手牌の情報を数値に変換する関数
+def change_hand_to_num(hand) -> list:
+
+    numbered_hand = []  # 戻り値を格納するリスト
+
+    for mentsu in hand:
+        mentsu_num = [] # 数値に変換した牌の情報を格納するリスト
+
+        for tile in mentsu:
+
+            tile_num = const.tiles[tile]    # 数値に変換
+            mentsu_num.append(tile_num)
+
+        numbered_hand.append(mentsu_num)
+    
+    return numbered_hand
+
+# 順子であるか判定する関数(面子の情報が数値に変換されていることが前提の関数)
+def find_shuntsu(mentsu) -> bool:
+
+    for tile in mentsu:
+        if tile > 30:   # 字牌が含まれている場合
+            return False
+
+    # 隣り合う要素の差が１であれば順子と判定する
+    if mentsu[0] + 1 == mentsu[1] and mentsu[1] + 1 == mentsu[2]:
+        return True
+
+    else:
+        return False
