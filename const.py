@@ -24,9 +24,9 @@ def find_full_flush(tiles_index):
 
 # すべて么九牌かどうかの判定を行う
 def find_full_yaochu(tiles_index):
-    for index in tiles_index:
-        # 中張牌が含まれる場合はFalse
-        if (index < 30 and (index % 10 not in (1,9))):
-            return False
+
+    # 中張牌が含まれる場合はFalse
+    if any((index < 30 and (index % 10 not in (1,9))) for index in tiles_index):
+        return False
     
     return True
