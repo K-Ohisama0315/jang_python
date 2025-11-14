@@ -32,9 +32,9 @@ rinshan = False			                #嶺上開花
 chankan = False			                #槍槓
 jikaze = "south"	                    #自風(east, south, west, north)
 bakaze = "east"	                        #場風(east, south, west, north)
-agari_tile = "white"			            #アガリ牌
+agari_tile = "white"			        #アガリ牌
 display_dora_tiles = ["3m", "white"]	#ドラ表示牌
-hand_tiles = ["white","east","east","north","red","west","white","west","white","east","north","north","red","red"]
+hand_tiles = ["1m","1p","1s","9p","1p","1m","1s","9m","1m","1p","1s","9p","9m","9p"] #清老頭
 call_tiles = []                         #鳴き牌
 
 situation_input:SituationInput = {
@@ -65,6 +65,8 @@ agari_hands.main_agari_process(situation_input)
 # hand_tiles = ["3p","7s","4m","4p","4m","4p","9s","3p","7s","8s","5p","5p","8s","9s"] # 七対子もしくは二盃口
 # hand_tiles = ["6s","3s","8s","2s","6s","3s","2s","green","2s","green","6s","green","8s","8s"] #緑一色
 # hand_tiles = ["white","east","east","north","red","west","white","west","white","east","north","north","red","red"] # 字一色
+# hand_tiles = ["1m","1p","1s","east","1p","1m","1s","east","1m","1p","1s","west","east","west"] #混老頭、三色同刻
+# hand_tiles = ["1m","1p","1s","9p","1p","1m","1s","9m","1m","1p","1s","9p","9m","9p"] #清老頭
 # hand_tiles = ["","","","","","","","","","","","","",""]
 
 
@@ -73,4 +75,6 @@ agari_hands.main_agari_process(situation_input)
 # print("国士無双のやつ", check_kokushi_musou(situation_input))
 # print("清一色のやつ", check_chin_iiso(situation_input))
 # print("緑一色のやつ", check_ryu_iiso(situation_input))
-print("字一色のやつ", check_tsu_iiso(situation_input))
+# print("字一色のやつ", check_tsu_iiso(situation_input))
+print("混老頭のやつ", check_hon_routou(situation_input))
+print("清老頭のやつ", check_chin_routou(situation_input))
