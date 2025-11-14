@@ -7,8 +7,8 @@ def check_chuuren(situation_input):
 
     # 面前でなければFalseを返す
     if (not situation_input["menzen"]):
-        print("面前ではありませんでした")
-        return False
+        # print("面前ではありませんでした")
+        return None
     
     tiles_index = []
     # 手牌を数値に置き換える
@@ -16,9 +16,9 @@ def check_chuuren(situation_input):
         tiles_index.append(const.tiles[tile])
     
     # 清一色でなければFalseを返す
-    if (not const.find_full_flush(tiles_index)):
-        print("清一色ではありませんでした")
-        return False
+    if (const.find_full_flush(tiles_index) != "清一色"):
+        # print("清一色ではありませんでした")
+        return None
     
     work_counts = collections.Counter(tiles_index)
 
@@ -39,15 +39,15 @@ def check_chuuren(situation_input):
 
 
     if (len(work_counts) != 9):
-        print("牌が全種類ありませんでした")
-        return False
+        # print("牌が全種類ありませんでした")
+        return None
     
     condition_1 = any(value >= 3 for key, value in work_counts.items() if key % 10 == 1)
     condition_9 = any(value >= 3 for key, value in work_counts.items() if key % 10 == 9)
 
     if not (condition_1 and condition_9):
-        print("1と9が3枚以上ありませんでした")
-        return False
+        # print("1と9が3枚以上ありませんでした")
+        return None
 
 
     return "九蓮宝燈"

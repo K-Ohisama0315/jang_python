@@ -5,9 +5,14 @@ from .yaku_1han.haku import check_haku
 # 二翻
 from .yaku_2han.chiitoitsu import check_chiitoitsu
 
+# 六翻
+from .yaku_6han.chin_iiso import check_chin_iiso
+
 # 役満
 from .yakuman.kokushi_musou import check_kokushi_musou
 from .yakuman.chuuren_poutou import check_chuuren
+from .yakuman.ryu_iiso import check_ryu_iiso
+from .yakuman.tsu_iiso import check_tsu_iiso
 
 # initファイルで外部に公開する関数を定義
 __all__ = [
@@ -15,7 +20,12 @@ __all__ = [
     "check_haku",
 
     "check_chiitoitsu",
-    "check_kokushi_musou",
 
-    "check_chuuren"
+    "check_chin_iiso",
+
+    "check_kokushi_musou",
+    "check_chuuren",
+    "check_ryu_iiso",
+    "check_tsu_iiso"
+
 ]

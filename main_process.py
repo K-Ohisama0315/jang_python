@@ -1,5 +1,4 @@
 from typing import TypedDict, List
-import pprint
 
 from agari_pattern import agari_hands
 from yaku_pattern import *
@@ -33,9 +32,9 @@ rinshan = False			                #嶺上開花
 chankan = False			                #槍槓
 jikaze = "south"	                    #自風(east, south, west, north)
 bakaze = "east"	                        #場風(east, south, west, north)
-agari_tile = "west"			            #アガリ牌
+agari_tile = "white"			            #アガリ牌
 display_dora_tiles = ["3m", "white"]	#ドラ表示牌
-hand_tiles = ["south","9p","1s","9s","1p","west","west","east","north","red","1m","white","9m","green"] 
+hand_tiles = ["white","east","east","north","red","west","white","west","white","east","north","north","red","red"]
 call_tiles = []                         #鳴き牌
 
 situation_input:SituationInput = {
@@ -51,18 +50,27 @@ situation_input:SituationInput = {
     "agari_tile": agari_tile,
     "display_dora_tiles": display_dora_tiles, 
     "hand_tiles": hand_tiles, 
-    "formed_hands": agari_hands.main_agari_process(hand_tiles),
+    "formed_hands": [],
     "call_tiles": call_tiles
 }
+
+agari_hands.main_agari_process(situation_input)
+
 
 # hand_tiles = ["5m", "7s", "white", "2p", "6m", "4p", "white", "7s", "3p", "4m", "white", "east", "east", "east"] # 白、東
 # hand_tiles = ["1m", "1m", "1m", "1m", "2m", "2m", "2m", "2m", "3m", "3m", "3m", "3m", "4m", "4m"] # 清一色、二盃口
 # hand_tiles = ["7s","9s","5s","1s","8s","1s","9s","1s","6s","4s","9s","3s","6s","2s"] # 九蓮宝燈
 # hand_tiles = ["2p","2p","4s","white","6p","west","6p","1m","4s","3s","west","3s","1m","white"] # 七対子
 # hand_tiles = ["south","9p","1s","9s","1p","west","west","east","north","red","1m","white","9m","green"] # 国士無双
+# hand_tiles = ["3p","7s","4m","4p","4m","4p","9s","3p","7s","8s","5p","5p","8s","9s"] # 七対子もしくは二盃口
+# hand_tiles = ["6s","3s","8s","2s","6s","3s","2s","green","2s","green","6s","green","8s","8s"] #緑一色
+# hand_tiles = ["white","east","east","north","red","west","white","west","white","east","north","north","red","red"] # 字一色
 # hand_tiles = ["","","","","","","","","","","","","",""]
 
 
 # print("九蓮宝燈のやつ",check_chuuren(situation_input))
 # print("七対子のやつ", check_chiitoitsu(situation_input))
-print("国士無双のやつ", check_kokushi_musou(situation_input))
+# print("国士無双のやつ", check_kokushi_musou(situation_input))
+# print("清一色のやつ", check_chin_iiso(situation_input))
+# print("緑一色のやつ", check_ryu_iiso(situation_input))
+print("字一色のやつ", check_tsu_iiso(situation_input))
