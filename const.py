@@ -12,19 +12,20 @@ tiles_swap = {v: k for k, v in tiles.items()}
 # 清一色であるかの判定を行う
 def find_full_flush(tiles_index):
     for index in tiles_index:
-        # 字牌が存在すればリターン
-        if (index > 30): 
-            return False
         # 一色では無ければリターン
         if (index // 10 != tiles_index[0] // 10): 
-            return False
+            return None
+        
+    # 先頭が字牌なら字一色
+    if (tiles_index[0] > 30):
+        return "字一色"
     
-    return True
+    return "清一色"
 
 # すべて么九牌かどうかの判定を行う
 def find_full_yaochu(tiles_index):
     for index in tiles_index:
-        # 中張牌はFalse
+        # 中張牌が含まれる場合はFalse
         if (index < 30 and (index % 10 not in (1,9))):
             return False
     
