@@ -40,7 +40,7 @@ def change_hand_to_num(hand) -> list:
 
         for tile in mentsu:
 
-            tile_num = const.tiles[tile]    # 数値に変換
+            tile_num = tiles[tile]    # 数値に変換
             mentsu_num.append(tile_num)
 
         numbered_hand.append(mentsu_num)
