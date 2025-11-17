@@ -113,21 +113,29 @@ def main_agari_process(situation_input):
         # アガリの重複削除
         all_mentsu_list = (find_all_mentsu(frozenset(work_counts.items())))
         for mentsu_list in all_mentsu_list:
-            if len(mentsu_list) == 4:
-                tuple_mentsu = [tuple(m) for m in mentsu_list]
-                tuple_mentsu.sort()
+            tuple_mentsu = [tuple(m) for m in mentsu_list]
+            tuple_mentsu.sort()
 
-                full_tuple_mentsu = (tuple(tuple_mentsu), tuple(hand["head"]))
-                unique_all_mentsu_set.add(full_tuple_mentsu)
+            full_tuple_mentsu = (tuple(tuple_mentsu), tuple(hand["head"]))
+            unique_all_mentsu_set.add(full_tuple_mentsu)
 
     for agari_tuple in unique_all_mentsu_set:
         # タプルをリストに戻し、文字に変換する
         agari_list = ([[const.tiles_swap[num] for num in list(m)] for m in agari_tuple[0]]), ([const.tiles_swap[num] for num in list(agari_tuple[1])])
 
         agari_dict_str = {y: x for y, x in zip((["hand", "head"]), agari_list)}
+        
+        for call_tiles in situation_input["call_tiles"]:
+            if (call_tiles["calling"] == "an_kan"):
+                for an_kan_tiles in call_tiles["mentsu"]:
+                    agari_dict_str["hand"].append(an_kan_tiles)
+            else:
+                for an_kan_tiles in call_tiles["mentsu"]:
+                    situation_input["formed_calls"].append(an_kan_tiles)
+    
         final_agari_list.append(agari_dict_str)
 
     situation_input["formed_hands"] = final_agari_list
 
         
-
+    
