@@ -1,10 +1,18 @@
 # 一翻
+from .yaku_1han.pinfu import check_pinfu
 from .yaku_1han.tanyao import check_tanyao
-from .yaku_1han.haku import check_haku
+from .yaku_1han.yakuhai import check_yaku_hai
 
 # 二翻
 from .yaku_2han.chiitoitsu import check_chiitoitsu
 from .yaku_2han.hon_routou import check_hon_routou
+from .yaku_2han.ikkitsuukan import check_ikkitsuukann
+from .yaku_2han.sansyoku_dojun import check_sansyoku_dojun
+from .yaku_2han.sansyoku_doko import check_sansyoku_doko
+
+# 三翻
+from .yaku_3han.jun_chanta import check_jun_chanta
+from .yaku_3han.ryan_peekou import check_ryan_peekou
 
 # 六翻
 from .yaku_6han.chin_iiso import check_chin_iiso
@@ -19,10 +27,17 @@ from .yakuman.chin_routou import check_chin_routou
 # initファイルで外部に公開する関数を定義
 __all__ = [
     "check_tanyao",
-    "check_haku",
+    "check_yaku_hai",
+    "check_pinfu",
 
     "check_chiitoitsu",
     "check_hon_routou",
+    "check_ikkitsuukann",
+    "check_sansyoku_dojun",
+    "check_sansyoku_doko",
+
+    "check_jun_chanta",
+    "check_ryan_peekou",
 
     "check_chin_iiso",
 
