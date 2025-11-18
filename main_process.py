@@ -38,10 +38,10 @@ rinshan = False			                # 嶺上開花
 chankan = False			                # 槍槓
 jikaze = "south"	                    # 自風(east, south, west, north)
 bakaze = "east"	                        # 場風(east, south, west, north)
-agari_tile = "white"			        # アガリ牌
+agari_tile = "3p"			            # アガリ牌
 display_dora_tiles = ["3m", "white"]	# ドラ表示牌
-hand_tiles = ["1m","1m"] #混全帯么九、東、發
-call_tiles = [{"calling":"an_kan", "mentsu": [["east", "east", "east", "east"],]},{"calling":"chi", "mentsu":[["1p","2p","3p"],]}, {"calling":"pon", "mentsu":[["1s","1s","1s"],["green", "green", "green"]]}]
+hand_tiles = ["1p","2p","3p","3p","3p","3p","4p","4p","4p","5p","5p","5p","6p","6p"]
+call_tiles = []
 
 situation_input:SituationInput = {
     "riichi": riichi,
@@ -50,7 +50,7 @@ situation_input:SituationInput = {
     "last_tsumo": last_tsumo, 
     "ippatsu": ippatsu, 
     "rinshan": rinshan, 
-    "chankan": rinshan, 
+    "chankan": chankan, 
     "jikaze": jikaze, 
     "bakaze": bakaze,
     "agari_tile": agari_tile,
@@ -75,9 +75,15 @@ agari_hands.main_agari_process(situation_input)
 # hand_tiles = ["white","east","east","north","red","west","white","west","white","east","north","north","red","red"] # 字一色
 # hand_tiles = ["1m","1p","1s","east","1p","1m","1s","east","1m","1p","1s","west","east","west"] #混老頭、三色同刻、東
 # hand_tiles = ["1m","1p","1s","9p","1p","1m","1s","9m","1m","1p","1s","9p","9m","9p"] #清老頭
+# hand_tiles = ["2p","4p","3p","3p","1p","4m","green","4m","3p","3p","5p","green","4m","green"] # 3pで辺張、両面、単騎
+# hand_tiles = ["1p","2p","3p","3p","3p","3p","4p","4p","4p","5p","5p","5p","6p","6p"]
 
 # hand_tiles = ["1m","1p","2p","3p","7s","8s","9s","1m"] #混全帯么九、東、發
 # call_tiles = [{"calling":"an_kan", "mentsu": ["east", "east", "east", "east"]},{"calling": "an_kan", "mentsu": ["green", "green", "green", "green"]}]
+
+# hand_tiles = ["1m","1m"] #混全帯么九、東、發
+# call_tiles = [{"calling":"an_kan", "mentsu": [["east", "east", "east", "east"],]},{"calling":"chi", "mentsu":[["1p","2p","3p"],]}, {"calling":"pon", "mentsu":[["1s","1s","1s"],["green", "green", "green"]]}]
+
 
 
 # print("九蓮宝燈のやつ",check_chuuren(situation_input))

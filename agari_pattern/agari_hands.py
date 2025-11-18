@@ -4,6 +4,16 @@ import collections
 import const
 from yaku_pattern import *
 
+                                                               
+                                                                                          
+#  ▄▄▄▄▄▄▄▄     ██                     ▄▄            ▄▄    ▄▄                            ▄▄ 
+#  ██▀▀▀▀▀▀     ▀▀                     ██            ██    ██                            ██ 
+#  ██         ████     ██▄████▄   ▄███▄██            ██    ██   ▄████▄    ▄█████▄   ▄███▄██ 
+#  ███████      ██     ██▀   ██  ██▀  ▀██            ████████  ██▄▄▄▄██   ▀ ▄▄▄██  ██▀  ▀██ 
+#  ██           ██     ██    ██  ██    ██            ██    ██  ██▀▀▀▀▀▀  ▄██▀▀▀██  ██    ██ 
+#  ██        ▄▄▄██▄▄▄  ██    ██  ▀██▄▄███            ██    ██  ▀██▄▄▄▄█  ██▄▄▄███  ▀██▄▄███ 
+#  ▀▀        ▀▀▀▀▀▀▀▀  ▀▀    ▀▀    ▀▀▀ ▀▀            ▀▀    ▀▀    ▀▀▀▀▀    ▀▀▀▀ ▀▀    ▀▀▀ ▀▀ 
+                                                                                          
 # 手牌の中から雀頭になりうる牌を取り出す
 def find_head(hand_tiles):
     # 手牌を数値に変換
@@ -36,6 +46,15 @@ def find_head(hand_tiles):
 
     return a
 
+                                                                                                              
+#  ▄▄▄▄▄▄▄▄     ██                     ▄▄            ▄▄▄  ▄▄▄                                                   
+#  ██▀▀▀▀▀▀     ▀▀                     ██            ███  ███                        ██                         
+#  ██         ████     ██▄████▄   ▄███▄██            ████████   ▄████▄   ██▄████▄  ███████   ▄▄█████▄  ██    ██ 
+#  ███████      ██     ██▀   ██  ██▀  ▀██            ██ ██ ██  ██▄▄▄▄██  ██▀   ██    ██      ██▄▄▄▄ ▀  ██    ██ 
+#  ██           ██     ██    ██  ██    ██            ██ ▀▀ ██  ██▀▀▀▀▀▀  ██    ██    ██       ▀▀▀▀██▄  ██    ██ 
+#  ██        ▄▄▄██▄▄▄  ██    ██  ▀██▄▄███            ██    ██  ▀██▄▄▄▄█  ██    ██    ██▄▄▄   █▄▄▄▄▄██  ██▄▄▄███ 
+#  ▀▀        ▀▀▀▀▀▀▀▀  ▀▀    ▀▀    ▀▀▀ ▀▀            ▀▀    ▀▀    ▀▀▀▀▀   ▀▀    ▀▀     ▀▀▀▀    ▀▀▀▀▀▀    ▀▀▀▀ ▀▀ 
+                                                                             
 @lru_cache(None)
 def find_all_mentsu(frozen_counts):
 
@@ -81,22 +100,80 @@ def find_all_mentsu(frozen_counts):
                 results.append([syuntsu] + r)
     return results
 
+                                                                                          
+#  ▄▄▄▄▄▄▄▄     ██                     ▄▄           ▄▄      ▄▄              ██              
+#  ██▀▀▀▀▀▀     ▀▀                     ██           ██      ██              ▀▀       ██     
+#  ██         ████     ██▄████▄   ▄███▄██           ▀█▄ ██ ▄█▀  ▄█████▄   ████     ███████  
+#  ███████      ██     ██▀   ██  ██▀  ▀██            ██ ██ ██   ▀ ▄▄▄██     ██       ██     
+#  ██           ██     ██    ██  ██    ██            ███▀▀███  ▄██▀▀▀██     ██       ██     
+#  ██        ▄▄▄██▄▄▄  ██    ██  ▀██▄▄███            ███  ███  ██▄▄▄███  ▄▄▄██▄▄▄    ██▄▄▄  
+#  ▀▀        ▀▀▀▀▀▀▀▀  ▀▀    ▀▀    ▀▀▀ ▀▀            ▀▀▀  ▀▀▀   ▀▀▀▀ ▀▀  ▀▀▀▀▀▀▀▀     ▀▀▀▀  
+                                                                                          
+# 待ち方を全通り調べる
+def find_wait(agari_dict, agari_tile):
+    hand_num = const.change_hand_to_num(agari_dict["hand"])
+    head_tiles = []
+    for tile in agari_dict["head"]:
+        head_tiles.append(const.tiles[tile])
+    hand_num.append(head_tiles)
+    agari_tile_num = const.tiles[agari_tile]
 
+    wait_set = set()
+    for mentsu in hand_num:
+        if (agari_tile_num not in mentsu):
+            continue
+
+        if (len(mentsu) == 2):      # 単騎待ちのとき
+            wait_set.add("tanki")
+            continue
+
+        if (len(set(mentsu)) == 1): # 双ポン待ちのとき
+            wait_set.add("syanpon")
+            continue
+
+        if (min(mentsu) < agari_tile_num < max(mentsu)):    # 嵌張待ちのとき
+            wait_set.add("kanchan")  
+        else:
+            # 辺張待ちの条件
+            is_penchan = (agari_tile_num % 10 == 3 and agari_tile_num == max(mentsu)) or \
+                         (agari_tile_num % 10 == 7 and agari_tile_num == min(mentsu))
+            if (is_penchan):    # 辺張待ちのとき
+                wait_set.add("penchan")
+            else:               # 両面待ちのとき
+                wait_set.add("ryanmen")
+    
+    wait_tuple = tuple(wait_set)
+
+    agari_dict_list = []
+    for wait in wait_tuple:
+        agari_dict["wait"] = wait
+        agari_dict_list.append(agari_dict.copy())
+    
+    return agari_dict_list
+
+#  ▄▄▄  ▄▄▄               ██              
+#  ███  ███               ▀▀              
+#  ████████   ▄█████▄   ████     ██▄████▄ 
+#  ██ ██ ██   ▀ ▄▄▄██     ██     ██▀   ██ 
+#  ██ ▀▀ ██  ▄██▀▀▀██     ██     ██    ██ 
+#  ██    ██  ██▄▄▄███  ▄▄▄██▄▄▄  ██    ██ 
+#  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀▀▀▀▀▀▀  ▀▀    ▀▀ 
 def main_agari_process(situation_input):
 
     final_agari_list = []
+    # 九蓮宝燈形かどうかの判定
     yaku_chuuren = check_chuuren(situation_input)
     if (not yaku_chuuren == None):
-        final_agari_list = {"hand":situation_input["hand_tiles"], "head":[]}
-        situation_input["formed_hands"] = final_agari_list
+        situation_input["formed_hands"].append({"hand":situation_input["hand_tiles"], "head":[]})
         return yaku_chuuren
     
+    # 国士無双形かどうかの判定
     yaku_kokuchi = check_kokushi_musou(situation_input)
     if (not yaku_kokuchi == None):
-        final_agari_list = {"hand":situation_input["hand_tiles"], "head":[]}
-        situation_input["formed_hands"] = final_agari_list
+        situation_input["formed_hands"].append({"hand":situation_input["hand_tiles"], "head":[]})
         return yaku_kokuchi
     
+    # 七対子形かどうかの判定
     yaku_chiitoitsu = check_chiitoitsu(situation_input)
     if (yaku_chiitoitsu):
         final_agari_list.append({"hand":situation_input["hand_tiles"], "head":[]})
@@ -104,7 +181,6 @@ def main_agari_process(situation_input):
     # 手牌の中から雀頭になりうる牌を取り出す
     hand_head = find_head(situation_input["hand_tiles"])
 
-    all_agari = []
     unique_all_mentsu_set = set()
     for i, hand in enumerate(hand_head):
         # 牌をカウントのタプルに置き換える(1pが3つなら、"1p":3 みたいなイメージ)
@@ -119,21 +195,29 @@ def main_agari_process(situation_input):
             full_tuple_mentsu = (tuple(tuple_mentsu), tuple(hand["head"]))
             unique_all_mentsu_set.add(full_tuple_mentsu)
 
+
     for agari_tuple in unique_all_mentsu_set:
         # タプルをリストに戻し、文字に変換する
-        agari_list = ([[const.tiles_swap[num] for num in list(m)] for m in agari_tuple[0]]), ([const.tiles_swap[num] for num in list(agari_tuple[1])])
+        agari_list = ([[const.tiles_swap[num] for num in list(m)] for m in agari_tuple[0]]), \
+                      ([const.tiles_swap[num] for num in list(agari_tuple[1])])
 
-        agari_dict_str = {y: x for y, x in zip((["hand", "head"]), agari_list)}
+        agari_dict = {y: x for y, x in zip((["hand", "head"]), agari_list)}
         
-        for call_tiles in situation_input["call_tiles"]:
-            if (call_tiles["calling"] == "an_kan"):
-                for an_kan_tiles in call_tiles["mentsu"]:
-                    agari_dict_str["hand"].append(an_kan_tiles)
-            else:
-                for an_kan_tiles in call_tiles["mentsu"]:
-                    situation_input["formed_calls"].append(an_kan_tiles)
-    
-        final_agari_list.append(agari_dict_str)
+        # 待ち方を格納する関数を呼び出す
+        agari_dict_list = find_wait(agari_dict, situation_input["agari_tile"])
+        
+        # 暗槓を手牌に追加する
+        
+        for agari in agari_dict_list:
+            for call_tiles in situation_input["call_tiles"]:
+                if (call_tiles["calling"] == "an_kan"):
+                    for an_kan_tiles in call_tiles["mentsu"]:
+                        agari["hand"].append(an_kan_tiles)
+                else:
+                    for an_kan_tiles in call_tiles["mentsu"]:
+                        situation_input["formed_calls"].append(an_kan_tiles)
+            
+            final_agari_list.append(agari)
 
     situation_input["formed_hands"] = final_agari_list
 
