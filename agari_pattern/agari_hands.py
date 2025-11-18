@@ -111,6 +111,7 @@ def find_all_mentsu(frozen_counts):
                                                                                           
 # 待ち方を全通り調べる
 def find_wait(agari_dict, agari_tile):
+    # 手牌を数値に置き換える
     hand_num = const.change_hand_to_num(agari_dict["hand"])
     head_tiles = []
     for tile in agari_dict["head"]:
@@ -118,9 +119,10 @@ def find_wait(agari_dict, agari_tile):
     hand_num.append(head_tiles)
     agari_tile_num = const.tiles[agari_tile]
 
+    # 待ち方を集合に格納していく
     wait_set = set()
     for mentsu in hand_num:
-        if (agari_tile_num not in mentsu):
+        if (agari_tile_num not in mentsu):  # 面子にアガリ牌が含まれていない場合スキップ
             continue
 
         if (len(mentsu) == 2):      # 単騎待ちのとき
