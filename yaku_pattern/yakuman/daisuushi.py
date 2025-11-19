@@ -35,7 +35,3 @@ def check_daisuushi(formed_hand, formed_call) -> str:
     
     # それ以外は不成立
     return None
-
-hand_set = {"hand":[["2s","3s","3s"],["west","west","west"],["1s","1s","1s"]],"head":["north","north"]}
-call_tile = [["east","east","east"],]
-print(check_daisuushi(hand_set, call_tile))
