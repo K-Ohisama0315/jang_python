@@ -1,4 +1,4 @@
-def check_ikkitsuukann(formed_hand, formed_call) -> bool:
+def check_ikkitsuukan(formed_hand, formed_call) -> bool:
     """
     一気通貫が成立するか判定する関数
     """

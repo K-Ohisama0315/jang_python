@@ -4,7 +4,7 @@ from .yaku_1han.yakuhai import check_yaku_hai
 
 # 二翻
 from .yaku_2han.chiitoitsu import check_chiitoitsu
-from .yaku_2han.ikkitsuukan import check_ikkitsuukann
+from .yaku_2han.ikkitsuukan import check_ikkitsuukan
 from .yaku_2han.sansyoku_dojun import check_sansyoku_dojun
 from .yaku_2han.sansyoku_doko import check_sansyoku_doko
 from .yaku_2han.toitoi_ho import check_toitoi_ho
@@ -18,7 +18,7 @@ from .yaku_6han.chin_iiso import check_chin_iiso
 
 # 役満
 from .yakuman.chin_routou import check_chin_routou
-from .yakuman.chuuren_poutou import check_chuuren
+from .yakuman.chuuren_poutou import check_chuuren_poutou
 from .yakuman.daisangen import check_daisangen
 from .yakuman.daisuushi import check_daisuushi
 from .yakuman.kokushi_musou import check_kokushi_musou
@@ -33,7 +33,7 @@ __all__ = [
     "check_yaku_hai",
 
     "check_chiitoitsu",
-    "check_ikkitsuukann",
+    "check_ikkitsuukan",
     "check_sansyoku_dojun",
     "check_sansyoku_doko",
     "check_toitoi_ho",
@@ -44,7 +44,7 @@ __all__ = [
     "check_chin_iiso",
 
     "check_chin_routou",
-    "check_chuuren",
+    "check_chuuren_poutou",
     "check_daisangen",
     "check_daisuushi",
     "check_kokushi_musou",

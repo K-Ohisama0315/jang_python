@@ -24,14 +24,14 @@ def check_daisuushi(formed_hand, formed_call) -> str:
     
     # 風牌の集合の要素数が4であれば大四喜成立
     if len(kaze_set) == 4:
-        return "daisuushi"
+        return "大四喜"
     
     # 風牌の集合の要素数が3の時
     if len(kaze_set) == 3:
         head = formed_hand["head"]
         # アタマが風牌であれば小四喜成立 
         if head[0] in kaze_tile and head[0] not in kaze_set:
-            return "shousuushi"
+            return "小四喜"
     
     # それ以外は不成立
     return None
