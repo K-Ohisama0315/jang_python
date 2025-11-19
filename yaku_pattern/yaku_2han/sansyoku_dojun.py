@@ -1,13 +1,13 @@
 import const
 
-def check_sansyoku_dojun(formed_hand, call_tile) -> bool:
+def check_sansyoku_dojun(formed_hand, formed_call) -> bool:
     """
     三色同順の判定を行う関数
     """
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for mentsu in call_tile:
+    for mentsu in formed_call:
         hand.append(mentsu)
     
     # 手牌の情報を数値に変換する

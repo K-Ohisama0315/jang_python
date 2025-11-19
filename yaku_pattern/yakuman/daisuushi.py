@@ -1,13 +1,13 @@
 kaze_tile = ["east", "south", "west", "north"]
 
-def check_daisuushi(formed_hand, call_tile) -> str:
+def check_daisuushi(formed_hand, formed_call) -> str:
     """
     大四喜が成立するか判定する
     """
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for mentsu in call_tile:
+    for mentsu in formed_call:
         hand.append(mentsu)
 
     # 刻子を抽出する
