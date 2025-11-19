@@ -27,7 +27,3 @@ def check_sansyoku_doko(formed_hand, formed_call) -> bool:
             return True
     
     return False
-
-hand_set = {"hand":[["2m","2m","2m"],["1s","1s","1s"],["1p","1p","1p"]],"head":["8m","8m"]}
-call = [["1m","1m","1m"],]
-print(check_sansyoku_doko(hand_set, call))
