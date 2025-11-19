@@ -27,7 +27,3 @@ def check_su_kantsu(formed_hand, formed_call) -> str:
     
     # 槓子が2つ以下の場合
     return None
-
-formed_hand = {"hand":[["3m","3m","3m","3m"],["6p","6p","6p","6p"]],"head":["8m","8m"]}
-formed_call = [["2m","2m","2m","2m"],["5s","5s","5s","5s"]]
-print(check_su_kantsu(formed_hand, formed_call))
