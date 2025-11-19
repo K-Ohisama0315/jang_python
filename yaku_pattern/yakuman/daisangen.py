@@ -1,13 +1,13 @@
 sangen_tile = ["white", "green", "red"]
 
-def check_daisangen(formed_hand, call_tile) -> str:
+def check_daisangen(formed_hand, formed_call) -> str:
     """
     大三元が成立するか判定する
     """
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for mentsu in call_tile:
+    for mentsu in formed_call:
         hand.append(mentsu)
 
     # 刻子を抽出する
@@ -35,7 +35,3 @@ def check_daisangen(formed_hand, call_tile) -> str:
     
     # それ以外は不成立
     return None
-    
-hand_set = {"hand":[["red","red","red"],["4m","5m","6m"],["7m","8m","9m"],["1s","2s","3s"]],"head":["5s","5s"]}
-call_tile = [["white","white","white"],]
-print(check_daisangen(hand_set, call_tile))
