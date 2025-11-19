@@ -6,9 +6,6 @@ def check_toitoi_ho(formed_hand, formed_call) -> bool:
     for mentsu in formed_call:
         hand.append(mentsu)
 
-    # 雀頭を手牌に加える
-    hand.append(formed_hand["head"])
-
     # 手牌がすべて刻子でできているか判定する
     toitoi_flg = True
     for mentsu in hand:
