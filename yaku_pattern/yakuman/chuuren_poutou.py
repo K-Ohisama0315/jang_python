@@ -3,27 +3,31 @@ import collections
 import const
 
 # 九蓮宝燈判定関数
-def check_chuuren(situation_input):
+def check_chuuren(hand_tiles, menzen, agari_tile) -> str:
+
+    # 牌が14枚なければFalseを返す
+    if (len(hand_tiles) != 14):
+        return None
 
     # 面前でなければFalseを返す
-    if (not situation_input["menzen"]):
+    if (not menzen):
         # print("面前ではありませんでした")
         return None
     
     tiles_index = []
     # 手牌を数値に置き換える
-    for tile in situation_input["hand_tiles"]:
+    for tile in hand_tiles:
         tiles_index.append(const.tiles[tile])
     
     # 清一色でなければFalseを返す
-    if (const.find_full_flush(tiles_index) != "清一色"):
+    if (not (const.find_full_flush(tiles_index) != "清一色")):
         # print("清一色ではありませんでした")
         return None
     
     work_counts = collections.Counter(tiles_index)
 
     # 純正九蓮宝燈用にカウンタ変数を準備
-    agari_index = const.tiles[situation_input["agari_tile"]]
+    agari_index = const.tiles[agari_tile]
     junsei_work_counts = work_counts.copy()
     junsei_work_counts[agari_index] -= 1
     if (junsei_work_counts[agari_index] == 0):
@@ -48,6 +52,5 @@ def check_chuuren(situation_input):
     if not (condition_1 and condition_9):
         # print("1と9が3枚以上ありませんでした")
         return None
-
 
     return "九蓮宝燈"

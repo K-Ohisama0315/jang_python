@@ -3,15 +3,20 @@ import collections
 import const
 
 # 国士無双判定関数
-def check_kokushi_musou(situation_input):
+def check_kokushi_musou(hand_tiles, menzen, agari_tile) -> str:
+
+    # 牌が14枚なければFalseを返す
+    if (len(hand_tiles) != 14):
+        return None
+    
     # 面前でなければFalseを返す
-    if (not situation_input["menzen"]):
+    if (not menzen):
         # print("面前ではありませんでした")
         return None
     
     tiles_index = []
     # 手牌を数値に置き換える
-    for tile in situation_input["hand_tiles"]:
+    for tile in hand_tiles:
         tiles_index.append(const.tiles[tile])
     
     # 中張牌が含まれていればFalseを返す
@@ -21,7 +26,7 @@ def check_kokushi_musou(situation_input):
 
     work_counts = collections.Counter(tiles_index)
 
-    agari_index = const.tiles[situation_input["agari_tile"]]
+    agari_index = const.tiles[agari_tile]
     junsei_work_counts = work_counts.copy()
     junsei_work_counts[agari_index] -= 1
     if (junsei_work_counts[agari_index] == 0):

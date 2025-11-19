@@ -164,21 +164,21 @@ def main_agari_process(situation_input):
 
     final_agari_list = []
     # 九蓮宝燈形かどうかの判定
-    yaku_chuuren = check_chuuren(situation_input)
+    yaku_chuuren = check_chuuren(situation_input["hand_tiles"], situation_input["menzen"], situation_input["agari_tile"])
     if (not yaku_chuuren == None):
-        situation_input["formed_hands"].append({"hand":situation_input["hand_tiles"], "head":[]})
+        situation_input["formed_hands"].append({"hand":[situation_input["hand_tiles"]], "head":[], "wait":[]})
         return yaku_chuuren
     
     # 国士無双形かどうかの判定
-    yaku_kokuchi = check_kokushi_musou(situation_input)
+    yaku_kokuchi = check_kokushi_musou(situation_input["hand_tiles"], situation_input["menzen"], situation_input["agari_tile"])
     if (not yaku_kokuchi == None):
-        situation_input["formed_hands"].append({"hand":situation_input["hand_tiles"], "head":[]})
+        situation_input["formed_hands"].append({"hand":[situation_input["hand_tiles"]], "head":[], "wait":[]})
         return yaku_kokuchi
     
     # 七対子形かどうかの判定
-    yaku_chiitoitsu = check_chiitoitsu(situation_input)
+    yaku_chiitoitsu = check_chiitoitsu(situation_input["hand_tiles"], situation_input["menzen"])
     if (yaku_chiitoitsu):
-        final_agari_list.append({"hand":situation_input["hand_tiles"], "head":[]})
+        final_agari_list.append({"hand":[situation_input["hand_tiles"]], "head":[], "wait":[]})
 
     # 手牌の中から雀頭になりうる牌を取り出す
     hand_head = find_head(situation_input["hand_tiles"])
