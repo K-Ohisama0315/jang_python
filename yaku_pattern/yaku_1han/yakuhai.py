@@ -1,9 +1,7 @@
-import pprint
-
 yaku_hai = {"white":"white", "green":"green", "red":"red", "jikaze":"", "bakaze":""}
 
 # 役牌判定関数
-def check_yaku_hai(jikaze, bakaze, formed_hand, call_tiles) -> dict:
+def check_yaku_hai(jikaze, bakaze, formed_hand, formed_call) -> dict:
 
     # 役牌の辞書に自風、場風を追加する
     yaku_hai["jikaze"] = jikaze
@@ -14,7 +12,7 @@ def check_yaku_hai(jikaze, bakaze, formed_hand, call_tiles) -> dict:
     yaku_dict = {"white":False, "green":False, "red":False, "jikaze":False, "bakaze":False}
     
     # 副露牌を手牌に追加
-    for mentsu in call_tiles:
+    for mentsu in formed_call:
         hand.append(mentsu)
 
     # 役ごとに刻子ができているか判定する
