@@ -3,7 +3,7 @@ import collections
 import const
 
 # 九蓮宝燈判定関数
-def check_chuuren(hand_tiles, menzen, agari_tile) -> str:
+def check_chuuren_poutou(hand_tiles, menzen, agari_tile) -> str:
 
     # 牌が14枚なければFalseを返す
     if (len(hand_tiles) != 14):
