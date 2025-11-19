@@ -20,6 +20,14 @@ def fu_calc(formed_hand, situation_input, yaku_set):
 
     # 面子の形によるボーナス(手牌)
     for mentsu in formed_hand["hand"]:
+        if (len(mentsu) == 14):
+            if (check_chiitoitsu(mentsu, situation_input["menzen"])):
+                fu = 25
+                return fu
+            else:
+                fu = 0
+            return fu
+        
         # 牌を集合に入れる
         mentsu_set = set(mentsu)
         # 順子はスキップ
