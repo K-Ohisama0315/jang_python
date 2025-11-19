@@ -1,11 +1,11 @@
-def check_sansyoku_doko(formed_hand, call) -> bool:
+def check_sansyoku_doko(formed_hand, formed_call) -> bool:
     """
     三色同刻が成立するか判定する
     """
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for mentsu in call:
+    for mentsu in formed_call:
         hand.append(mentsu)
 
     # 刻子を判定し、色と数字に分けた後タプルに代入して、それをリストに格納する

@@ -2,7 +2,7 @@ yaochuu_tiles = ["1m", "9m", "1p", "9p", "1s", "9s",
                  "east", "south", "west", "north",
                  "white", "green", "red"]
 
-def check_jun_chanta(formed_hand, call_tile) -> str:
+def check_jun_chanta(formed_hand, formed_call) -> str:
     """
     純全帯么九、混全帯么九が成立するか判定する関数
     """
@@ -10,7 +10,7 @@ def check_jun_chanta(formed_hand, call_tile) -> str:
     hand.append(formed_hand["head"])
 
     # 副露牌を手牌に追加
-    for mentsu in call_tile:
+    for mentsu in formed_call:
         hand.append(mentsu)
     
     # 么九牌が含まれているか確認
@@ -37,7 +37,7 @@ def check_jun_chanta(formed_hand, call_tile) -> str:
             kotsu_count += 1
     
     if kotsu_count == 5:
-        return "jun_chanta"
+        return "純全帯么九"
     else:
-        return "chanta"
+        return "混全帯么九"
     

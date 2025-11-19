@@ -1,11 +1,11 @@
-def check_ikkitsuukann(formed_hand, call_tile) -> bool:
+def check_ikkitsuukann(formed_hand, formed_call) -> bool:
     """
     一気通貫が成立するか判定する関数
     """
     hand = formed_hand["hand"]
 
     # 副露牌を手牌に追加
-    for mentsu in call_tile:
+    for mentsu in formed_call:
         hand.append(mentsu)
 
     # 順子のみを抽出する
