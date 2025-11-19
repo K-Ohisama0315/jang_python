@@ -3,15 +3,20 @@ import collections
 import const
 
 # 七対子判定関数
-def check_chiitoitsu(situation_input):
+def check_chiitoitsu(hand_tiles, menzen) -> bool:
+
+    # 牌が14枚なければFalseを返す
+    if (len(hand_tiles) != 14):
+        return None
+
     # 面前でなければFalseを返す
-    if (not situation_input["menzen"]):
+    if (not menzen):
         # print("面前ではありませんでした")
         return False
     
     tiles_index = []
     # 手牌を数値に置き換える
-    for tile in situation_input["hand_tiles"]:
+    for tile in hand_tiles:
         tiles_index.append(const.tiles[tile])
     
     work_counts = collections.Counter(tiles_index)
