@@ -1,5 +1,6 @@
-import helper
+from functools import lru_cache
 
+import helper
 from yaku_pattern import *
 
                                                                       
@@ -11,7 +12,7 @@ from yaku_pattern import *
 #    ██      ██▄▄▄███            ▀██▄▄▄▄█  ██▄▄▄███    ██▄▄▄   ▀██▄▄▄▄█ 
 #    ▀▀       ▀▀▀▀ ▀▀              ▀▀▀▀▀    ▀▀▀▀ ▀▀     ▀▀▀▀     ▀▀▀▀▀  
 #                     ▀▀▀▀▀▀▀▀▀▀                                        
-def fu_calc(formed_hand, situation_input, yaku_set):
+def fu_calc(formed_hand, situation_input, yaku_set) -> int:
     # 基礎点
     fu = 20
 
@@ -20,7 +21,9 @@ def fu_calc(formed_hand, situation_input, yaku_set):
 
     # 面子の形によるボーナス(手牌)
     for mentsu in formed_hand["hand"]:
+        # 先頭行に牌が14枚ある場合は特殊アガリ(国士無双、九蓮宝燈、七対子)なのでリターン
         if (len(mentsu) == 14):
+            # 七対子は25符固定
             if (check_chiitoitsu(mentsu, situation_input["menzen"])):
                 fu = 25
                 return fu
@@ -98,37 +101,20 @@ def fu_calc(formed_hand, situation_input, yaku_set):
 
     #1の位を切り上げた符を返す
     return helper.ceil(fu, 1)
-                                                                                
-#  ▄▄                                                          ▄▄▄▄               
-#  ██                                                          ▀▀██               
-#  ██▄████▄   ▄█████▄  ██▄████▄             ▄█████▄   ▄█████▄    ██       ▄█████▄ 
-#  ██▀   ██   ▀ ▄▄▄██  ██▀   ██            ██▀    ▀   ▀ ▄▄▄██    ██      ██▀    ▀ 
-#  ██    ██  ▄██▀▀▀██  ██    ██            ██        ▄██▀▀▀██    ██      ██       
-#  ██    ██  ██▄▄▄███  ██    ██            ▀██▄▄▄▄█  ██▄▄▄███    ██▄▄▄   ▀██▄▄▄▄█ 
-#  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀    ▀▀              ▀▀▀▀▀    ▀▀▀▀ ▀▀     ▀▀▀▀     ▀▀▀▀▀  
-#                               ▀▀▀▀▀▀▀▀▀▀                                        
-def han_calc(formed_hand, situation_input):
-    pass
 
-def point_calculateing (situation_input):
-    
-    """
-    麻雀の点数を計算する関数
-    """
-    # 翻、符を0で初期化する
+                                                                      
+#     ▄▄▄▄                                                     ▄▄▄▄     
+#   ██▀▀▀▀█                                                    ▀▀██     
+#  ██         ▄████▄   ██▄████▄   ▄████▄    ██▄████   ▄█████▄    ██     
+#  ██  ▄▄▄▄  ██▄▄▄▄██  ██▀   ██  ██▄▄▄▄██   ██▀       ▀ ▄▄▄██    ██     
+#  ██  ▀▀██  ██▀▀▀▀▀▀  ██    ██  ██▀▀▀▀▀▀   ██       ▄██▀▀▀██    ██     
+#   ██▄▄▄██  ▀██▄▄▄▄█  ██    ██  ▀██▄▄▄▄█   ██       ██▄▄▄███    ██▄▄▄  
+#     ▀▀▀▀     ▀▀▀▀▀   ▀▀    ▀▀    ▀▀▀▀▀    ▀▀        ▀▀▀▀ ▀▀     ▀▀▀▀  
+                                                                      
+@lru_cache(None)
+def han_calc_general(situation_input, yaku_set) -> int:
+
     han = 0
-    fu = 0
-
-    # 役集合の宣言
-    yaku_set = set()
-
-    jikaze = situation_input["jikaze"]
-    bakaze = situation_input["bakaze"]
-    agari_tile = situation_input["agari_input"]
-
-    formed_hands = situation_input["formed_hand"]
-    call_tiles = situation_input["call_tiles"]
-
     # 立直している場合
     if situation_input["riichi"] == 2:
         han += 2
@@ -168,20 +154,91 @@ def point_calculateing (situation_input):
         yaku_set.add("一発")
 
     # ドラの計算
-    for dora_tile in situation_input["display_dora_tiles"]:
+    dora = 0
+    for dora_tile in situation_input["dora_tiles"]:
         for hand_tile in situation_input["hand_tiles"]:
             if dora_tile == hand_tile:
-                han += 1
+                dora += 1
     
-    if han > 1:
-        yaku_set.add("ドラ", han)
+    if dora > 1:
+        han += dora
+        yaku_set.add("ドラ", dora)
 
-    for formed_hand in formed_hands:
+    return han
+
+
+#  ▄▄                                                          ▄▄▄▄               
+#  ██                                                          ▀▀██               
+#  ██▄████▄   ▄█████▄  ██▄████▄             ▄█████▄   ▄█████▄    ██       ▄█████▄ 
+#  ██▀   ██   ▀ ▄▄▄██  ██▀   ██            ██▀    ▀   ▀ ▄▄▄██    ██      ██▀    ▀ 
+#  ██    ██  ▄██▀▀▀██  ██    ██            ██        ▄██▀▀▀██    ██      ██       
+#  ██    ██  ██▄▄▄███  ██    ██            ▀██▄▄▄▄█  ██▄▄▄███    ██▄▄▄   ▀██▄▄▄▄█ 
+#  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀    ▀▀              ▀▀▀▀▀    ▀▀▀▀ ▀▀     ▀▀▀▀     ▀▀▀▀▀  
+#                               ▀▀▀▀▀▀▀▀▀▀                                        
+def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
+    # 役満判定
+    yakuman = ("清老頭","九蓮宝燈","大三元","小四喜","国士無双","緑一色","字一色","四暗刻","四槓子")
+    double_yakuman = ("純正九蓮宝燈","大四喜","国士無双十三面待ち","四暗刻単騎待ち")
+    
+    yaku_set.add(check_chin_routou(situation_input["hand_tiles"], situation_input["formed_calls"]))
+    yaku_set.add(check_chuuren_poutou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
+    yaku_set.add(check_daisangen(formed_hand, situation_input["formed_calls"]))
+    yaku_set.add(check_daisuushi(formed_hand, situation_input["formed_calls"]))
+    yaku_set.add(check_kokushi_musou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
+    yaku_set.add(check_ryu_iiso_tsu_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
+    yaku_set.add(check_su_anko(formed_hand))
+    yaku_set.add(check_su_kantsu(formed_hand, situation_input["formed_calls"]))
+
+    calc_dict["yakuman"] += len(yaku_set.intersection(yakuman))
+    calc_dict["yakuman"] += 2 * len(yaku_set.intersection(double_yakuman))
+
+    # 役満があればリターン
+    if (calc_dict["yakuman"] != 0):
+        return
+
+    # 状況で確定する役を取得
+    calc_dict["han"] += han_calc_general(situation_input, yaku_set)
+
+    # 役判定
+
+    # 翻数を返す
+    pass
+
+                                        
+#  ▄▄▄  ▄▄▄               ██              
+#  ███  ███               ▀▀              
+#  ████████   ▄█████▄   ████     ██▄████▄ 
+#  ██ ██ ██   ▀ ▄▄▄██     ██     ██▀   ██ 
+#  ██ ▀▀ ██  ▄██▀▀▀██     ██     ██    ██ 
+#  ██    ██  ██▄▄▄███  ▄▄▄██▄▄▄  ██    ██ 
+#  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀▀▀▀▀▀▀  ▀▀    ▀▀ 
+                                        
+def point_calculateing (situation_input):
+    
+    """
+    麻雀の点数を計算する関数
+    """
+    # 役満数、翻、符を0で初期化する
+    calc_dict = {"yakuman":0, "han":0, "fu":0}
+    max_point = 0
+
+    # 役集合の宣言
+    yaku_set = set()
+
+    for formed_hand in situation_input["formed_hand"]:
+        calc_dict.clear() = {"yakuman":0, "han":0, "fu":0}
         # 符計算
-        fu += fu_calc(formed_hand, situation_input, yaku_set)
+        fu_calc(formed_hand, situation_input, yaku_set, calc_dict)
         
         # 翻計算
-        han += han_calc(formed_hand, situation_input)
+        han_calc(formed_hand, situation_input, yaku_set, calc_dict)
+
+        point = point_calc(calc_dict)
+
+        if (max_point < point):
+            max_point = point
+
+
      
     # 基本点の計算
     # 役満の場合
