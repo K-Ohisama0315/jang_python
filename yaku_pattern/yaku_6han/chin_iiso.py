@@ -18,12 +18,12 @@ def check_chin_iiso(hand_tiles, formed_calls) -> str:
 
     # 手牌から字牌を抜き出す
     honitsu_list = []
-    for tile in honitsu_list:
+    for tile in tiles_index:
         if tile < 30:
             honitsu_list.append(tile)
 
     # 混一色の判定
-    if (const.find_full_flush(tiles_index) == "清一色"):
+    if (const.find_full_flush(honitsu_list) == "清一色"):
         return "混一色"
 
     return None

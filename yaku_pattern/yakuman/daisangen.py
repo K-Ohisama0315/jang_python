@@ -24,14 +24,14 @@ def check_daisangen(formed_hand, formed_call) -> str:
     
     # 三元牌の集合の要素数が3であれば大三元成立
     if len(sangen_set) == 3:
-        return "daisangen"
+        return "大三元"
     
     # 三元牌の集合の要素数が2の時
     if len(sangen_set) == 2:
         head = formed_hand["head"]
         # アタマが三元牌であれば小三元成立 
         if head[0] in sangen_tile and head[0] not in sangen_set:
-            return "shousangen"
+            return "小三元"
     
     # それ以外は不成立
     return None
