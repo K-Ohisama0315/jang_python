@@ -18,6 +18,7 @@ def check_ryan_peekou(menzen, formed_hand) -> str:
             shuntsu_list.append(mentsu)
     
     # 一盃口、二盃口が成立するか判定する
+    finish_hand = []
     for tile in shuntsu_list:
         # 順序が完全に一致する重複を探す
         finish_hand = set(tuple(tile) for tile in shuntsu_list)
