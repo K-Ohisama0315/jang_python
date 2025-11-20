@@ -164,7 +164,7 @@ def main_agari_process(situation_input):
 
     final_agari_list = []
     # 九蓮宝燈形かどうかの判定
-    yaku_chuuren = check_chuuren(situation_input["hand_tiles"], situation_input["menzen"], situation_input["agari_tile"])
+    yaku_chuuren = check_chuuren_poutou(situation_input["hand_tiles"], situation_input["menzen"], situation_input["agari_tile"])
     if (not yaku_chuuren == None):
         situation_input["formed_hands"].append({"hand":[situation_input["hand_tiles"]], "head":[], "wait":[]})
         return yaku_chuuren
