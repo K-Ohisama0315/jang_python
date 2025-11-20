@@ -20,7 +20,7 @@ def check_chuuren_poutou(hand_tiles, menzen, agari_tile) -> str:
         tiles_index.append(const.tiles[tile])
     
     # 清一色でなければFalseを返す
-    if (not (const.find_full_flush(tiles_index) != "清一色")):
+    if ((const.find_full_flush(tiles_index) != "清一色")):
         # print("清一色ではありませんでした")
         return None
     
