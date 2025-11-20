@@ -9,7 +9,7 @@ def check_jun_chanta(formed_hand, formed_call) -> str:
     """
     純全帯么九、混全帯么九が成立するか判定する関数
     """
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加
     for mentsu in formed_call:

@@ -6,7 +6,7 @@ def check_ryan_peekou(menzen, formed_hand) -> str:
     if not menzen:
         return None
     
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 手牌の情報を数値に変換する
     numbered_hand = const.change_hand_to_num(hand)

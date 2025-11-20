@@ -1,6 +1,6 @@
 def check_toitoi_ho(formed_hand, formed_call) -> bool:
 
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加する
     for mentsu in formed_call:

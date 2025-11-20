@@ -6,8 +6,8 @@ def check_tanyao(formed_hand, formed_call) -> bool:
     """
     手牌がタンヤオか判定する
     """
-    hand = formed_hand["hand"]
-    head = formed_hand["head"]
+    hand = formed_hand["hand"].copy()
+    head = formed_hand["head"].copy()
     
     # 副露牌を手牌に追加
     for mentsu in formed_call:
