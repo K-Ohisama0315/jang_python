@@ -15,6 +15,8 @@ def find_full_flush(tiles_index):
         # 一色では無ければリターン
         if (index // 10 != tiles_index[0] // 10): 
             return None
+        
+    for index in tiles_index:
         # 字牌が存在すればリターン
         if (index > 30): 
             return "字一色"
