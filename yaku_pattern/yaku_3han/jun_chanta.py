@@ -2,6 +2,9 @@ yaochuu_tiles = ["1m", "9m", "1p", "9p", "1s", "9s",
                  "east", "south", "west", "north",
                  "white", "green", "red"]
 
+zihai_tiles = ["east", "south", "west", "north",
+                 "white", "green", "red"]
+
 def check_jun_chanta(formed_hand, formed_call) -> str:
     """
     純全帯么九、混全帯么九が成立するか判定する関数
@@ -26,21 +29,25 @@ def check_jun_chanta(formed_hand, formed_call) -> str:
             chanta.append(mentsu)
     
     # 雀頭に么九牌が含まれている場合
-    for tile in yaochuu_tiles:
-        if formed_hand["head"][0] == tile:
-            chanta.append(formed_hand["head"])
+    if formed_hand["head"][0] in yaochuu_tiles:
+        chanta.append(formed_hand["head"])
     
     # 么九牌が含まれる面子が5種類未満の場合は、純全帯么九・混全帯么九は成立しない
     if len(chanta) < 5:
         return None
     
     # 純全帯么九か混全帯么九かを判定
-    kotsu_count = 0
-    for mentsu in chanta:
-        if mentsu[0] == mentsu[1]: # 刻子の場合(雀頭も判定に含むため、1番目と2番目のみを比較)
-            kotsu_count += 1
+    # 面子の判定
+    jun_chanta = []
+    for mentsu in hand:
+        if mentsu[0] not in zihai_tiles:
+            jun_chanta.append(mentsu)
     
-    if kotsu_count == 5:
+    # 雀頭の判定
+    if formed_hand["head"][0] not in zihai_tiles:
+        jun_chanta.append(formed_hand["head"])
+    
+    if len(jun_chanta) == 5:
         return "純全帯么九"
     else:
         return "混全帯么九"
