@@ -4,7 +4,7 @@ def check_daisangen(formed_hand, formed_call) -> str:
     """
     大三元が成立するか判定する
     """
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加
     for mentsu in formed_call:

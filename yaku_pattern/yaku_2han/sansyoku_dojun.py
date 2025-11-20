@@ -4,7 +4,7 @@ def check_sansyoku_dojun(formed_hand, formed_call) -> bool:
     """
     三色同順の判定を行う関数
     """
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加
     for mentsu in formed_call:

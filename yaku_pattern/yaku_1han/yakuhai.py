@@ -7,7 +7,7 @@ def check_yaku_hai(jikaze, bakaze, formed_hand, formed_call) -> dict:
     yaku_hai["jikaze"] = jikaze
     yaku_hai["bakaze"] = bakaze
 
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     yaku_dict = {"white":False, "green":False, "red":False, "jikaze":False, "bakaze":False}
     

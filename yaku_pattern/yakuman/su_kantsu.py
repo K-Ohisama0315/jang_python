@@ -1,7 +1,7 @@
 # 四槓子、三槓子判定関数
 def check_su_kantsu(formed_hand, formed_call) -> str:
 
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加
     for mentsu in formed_call:

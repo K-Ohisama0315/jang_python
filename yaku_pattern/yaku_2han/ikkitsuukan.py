@@ -2,7 +2,7 @@ def check_ikkitsuukan(formed_hand, formed_call) -> bool:
     """
     一気通貫が成立するか判定する関数
     """
-    hand = formed_hand["hand"]
+    hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加
     for mentsu in formed_call:
