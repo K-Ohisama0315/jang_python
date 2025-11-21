@@ -1,6 +1,5 @@
-from functools import lru_cache
-
 import helper
+import const
 from yaku_pattern import *
 
                                                                       
@@ -12,24 +11,25 @@ from yaku_pattern import *
 #    ██      ██▄▄▄███            ▀██▄▄▄▄█  ██▄▄▄███    ██▄▄▄   ▀██▄▄▄▄█ 
 #    ▀▀       ▀▀▀▀ ▀▀              ▀▀▀▀▀    ▀▀▀▀ ▀▀     ▀▀▀▀     ▀▀▀▀▀  
 #                     ▀▀▀▀▀▀▀▀▀▀                                        
-def fu_calc(formed_hand, situation_input, yaku_set) -> int:
+def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     # 基礎点
-    fu = 20
+    calc_dict["fu"] = 20
 
     # 平和判定用変数
     is_pinfu = True
 
+    # 先頭行に牌が14枚ある場合は特殊アガリ(国士無双、九蓮宝燈、七対子)なのでリターン
+    if (len(formed_hand["hand"][0]) == 14):
+    # 七対子は25符固定
+        if (check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"])):
+            calc_dict["fu"] = 25
+            return
+        else:
+            calc_dict["fu"] = 0
+        return
+
     # 面子の形によるボーナス(手牌)
     for mentsu in formed_hand["hand"]:
-        # 先頭行に牌が14枚ある場合は特殊アガリ(国士無双、九蓮宝燈、七対子)なのでリターン
-        if (len(mentsu) == 14):
-            # 七対子は25符固定
-            if (check_chiitoitsu(mentsu, situation_input["menzen"])):
-                fu = 25
-                return fu
-            else:
-                fu = 0
-            return fu
         
         # 牌を集合に入れる
         mentsu_set = set(mentsu)
@@ -40,12 +40,14 @@ def fu_calc(formed_hand, situation_input, yaku_set) -> int:
         # 暗槓や暗刻があるため平和は成立しない
         is_pinfu = False
 
-        tile = mentsu_set[0]
+        tile_str = next(iter(mentsu_set))
+        tile = const.tiles[tile_str]
+
         # 么九牌用に倍率設定
         yaochu_bonus = 1 if (tile < 30 and tile % 10 not in (1, 9)) else 2
 
         # 暗槓の場合は16符、暗刻の場合は4符追加(么九牌は2倍)
-        fu += 16 * yaochu_bonus if (len(mentsu) == 4) else 4 * yaochu_bonus
+        calc_dict["fu"] += 16 * yaochu_bonus if (len(mentsu) == 4) else 4 * yaochu_bonus
 
     # 面子の形によるボーナス(鳴き牌)
     for mentsu in situation_input["formed_calls"]:
@@ -59,20 +61,22 @@ def fu_calc(formed_hand, situation_input, yaku_set) -> int:
         if (len(mentsu_set) != 1):
             continue
 
-        tile = mentsu_set[0]
+        tile_str = next(iter(mentsu_set))
+        tile = const.tiles[tile_str]
+
         # 么九牌用に倍率設定
         yaochu_bonus = 1 if (tile < 30 and tile % 10 not in (1, 9)) else 2
 
         # 明槓の場合は8符、明刻の場合は2符追加(么九牌は2倍)
-        fu += 8 * yaochu_bonus if (len(mentsu) == 4) else 2 * yaochu_bonus
+        calc_dict["fu"] += 8 * yaochu_bonus if (len(mentsu) == 4) else 2 * yaochu_bonus
 
     # 雀頭が役牌の場合
-    if (set(formed_hand["head"])[0] > 30):
+    if ((const.tiles[formed_hand["head"][0]]) > 30):
         # 平和は成立しない
         is_pinfu = False
 
         # 2符追加
-        fu += 2 
+        calc_dict["fu"] += 2 
 
     # 単騎待ち、嵌張待ち、辺張待ちの場合
     if formed_hand["wait"] in ("tanki", "kanchan", "penchan"):
@@ -80,27 +84,28 @@ def fu_calc(formed_hand, situation_input, yaku_set) -> int:
         is_pinfu = False
 
         # 2符追加
-        fu += 2 
+        calc_dict["fu"] += 2 
 
     # 門前ロンの場合
     if situation_input["menzen"] and situation_input["agari_situation"] == "ron":
         # 10符追加
-        fu += 10
+        calc_dict["fu"] += 10
 
     # ツモの場合
     if situation_input["agari_situation"] == "tsumo":
         # 2符追加
-        fu += 2
+        calc_dict["fu"] += 2
 
         # 平和ツモは20符固定
         if (is_pinfu):
-            fu = 20
+            calc_dict["fu"] = 20
 
     if (is_pinfu):
         yaku_set.add("平和")
 
-    #1の位を切り上げた符を返す
-    return helper.ceil(fu, 1)
+    #1の位を切り上げる
+    calc_dict["fu"] = helper.ceil(calc_dict["fu"], 1)
+    return 
 
                                                                       
 #     ▄▄▄▄                                                     ▄▄▄▄     
@@ -110,8 +115,8 @@ def fu_calc(formed_hand, situation_input, yaku_set) -> int:
 #  ██  ▀▀██  ██▀▀▀▀▀▀  ██    ██  ██▀▀▀▀▀▀   ██       ▄██▀▀▀██    ██     
 #   ██▄▄▄██  ▀██▄▄▄▄█  ██    ██  ▀██▄▄▄▄█   ██       ██▄▄▄███    ██▄▄▄  
 #     ▀▀▀▀     ▀▀▀▀▀   ▀▀    ▀▀    ▀▀▀▀▀    ▀▀        ▀▀▀▀ ▀▀     ▀▀▀▀  
-                                                                      
-@lru_cache(None)
+
+                                                        
 def han_calc_general(situation_input, yaku_set) -> int:
 
     han = 0
@@ -124,7 +129,7 @@ def han_calc_general(situation_input, yaku_set) -> int:
         yaku_set.add("立直")
 
     # 面前清自摸和の場合
-    if situation_input["menzen"] and situation_input["agari_situation"] == "ツモ":
+    if situation_input["menzen"] and situation_input["agari_situation"] == "tsumo":
         han += 1
         yaku_set.add("面前清自摸和")
     
@@ -155,14 +160,11 @@ def han_calc_general(situation_input, yaku_set) -> int:
 
     # ドラの計算
     dora = 0
-    for dora_tile in situation_input["dora_tiles"]:
-        for hand_tile in situation_input["hand_tiles"]:
-            if dora_tile == hand_tile:
-                dora += 1
+    dora = sum(hand_tile in situation_input["dora_tiles"] for hand_tile in situation_input["hand_tiles"])
     
-    if dora > 1:
+    if dora > 0:
         han += dora
-        yaku_set.add("ドラ", dora)
+        yaku_set.add("ドラ" + str(dora))
 
     return han
 
@@ -200,10 +202,65 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     calc_dict["han"] += han_calc_general(situation_input, yaku_set)
 
     # 役判定
+    yaku_set.add("断么九" if check_tanyao(formed_hand, situation_input["formed_calls"]) else None)
+    yaku_set.update(check_yaku_hai(situation_input["jikaze"], situation_input["bakaze"], formed_hand, situation_input["formed_calls"]))
+    yaku_set.add("七対子" if check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"]) else None)
+    yaku_set.add("一気通貫" if check_ikkitsuukan(formed_hand, situation_input["formed_calls"]) else None)
+    yaku_set.add("三色同順" if check_sansyoku_dojun(formed_hand, situation_input["formed_calls"]) else None)
+    yaku_set.add("三色同刻" if check_sansyoku_doko(formed_hand, situation_input["formed_calls"]) else None)
+    yaku_set.add("対々和" if check_toitoi_ho(formed_hand, situation_input["formed_calls"]) else None)
+    yaku_set.add(check_jun_chanta(formed_hand, situation_input["formed_calls"]))
+    yaku_set.add(check_ryan_peekou(situation_input["menzen"], formed_hand))
+    yaku_set.add(check_chin_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
 
-    # 翻数を返す
-    pass
+    yaku_set.discard(None)
+    yaku_set.discard(False)
 
+    # 翻数計算
+    # yaku_setの要素ごとに翻数を追加
+    for yaku in yaku_set:
+        if yaku in const.yaku_han:
+            calc_dict["han"] += const.yaku_han[yaku] - ((not situation_input["menzen"]) and yaku in const.kuisagari)
+
+    return
+
+                                                                                                    
+#  ▄▄▄▄▄▄                 ██                                                       ▄▄▄▄               
+#  ██▀▀▀▀█▄               ▀▀                 ██                                    ▀▀██               
+#  ██    ██   ▄████▄    ████     ██▄████▄  ███████              ▄█████▄   ▄█████▄    ██       ▄█████▄ 
+#  ██████▀   ██▀  ▀██     ██     ██▀   ██    ██                ██▀    ▀   ▀ ▄▄▄██    ██      ██▀    ▀ 
+#  ██        ██    ██     ██     ██    ██    ██                ██        ▄██▀▀▀██    ██      ██       
+#  ██        ▀██▄▄██▀  ▄▄▄██▄▄▄  ██    ██    ██▄▄▄             ▀██▄▄▄▄█  ██▄▄▄███    ██▄▄▄   ▀██▄▄▄▄█ 
+#  ▀▀          ▀▀▀▀    ▀▀▀▀▀▀▀▀  ▀▀    ▀▀     ▀▀▀▀               ▀▀▀▀▀    ▀▀▀▀ ▀▀     ▀▀▀▀     ▀▀▀▀▀  
+#                                                   ▀▀▀▀▀▀▀▀▀▀                                        
+def point_calc(calc_dict):
+    point_mangan = 2000
+    if (calc_dict["yakuman"] != 0):     # 役満
+        basic_point = int(point_mangan * 4.0 * calc_dict["yakuman"])
+
+    elif (calc_dict["han"] >= 13):      # 数え役満
+        basic_point = int(point_mangan * 4.0)
+    
+    elif (calc_dict["han"] >= 11):      # 三倍満
+        basic_point = int(point_mangan * 3.0)
+
+    elif (calc_dict["han"] >= 8):       # 倍満
+        basic_point = int(point_mangan * 2.0)
+
+    elif (calc_dict["han"] >= 6):       # 跳満
+        basic_point = int(point_mangan * 1.5)
+
+    elif (calc_dict["han"] >= 5):       # 満貫
+        basic_point = int(point_mangan * 1.0)
+
+    else:
+        basic_point = (2 ** (calc_dict["han"] + 2)) * calc_dict["fu"]
+        if (basic_point > 2000):        # 切り上げ満貫
+            basic_point = point_mangan
+
+    return basic_point
+        
+    
                                         
 #  ▄▄▄  ▄▄▄               ██              
 #  ███  ███               ▀▀              
@@ -213,7 +270,7 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
 #  ██    ██  ██▄▄▄███  ▄▄▄██▄▄▄  ██    ██ 
 #  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀▀▀▀▀▀▀  ▀▀    ▀▀ 
                                         
-def point_calculateing (situation_input):
+def main_calc_process (situation_input):
     
     """
     麻雀の点数を計算する関数
@@ -224,76 +281,47 @@ def point_calculateing (situation_input):
 
     # 役集合の宣言
     yaku_set = set()
+    max_yaku_set = set()
 
-    for formed_hand in situation_input["formed_hand"]:
-        calc_dict.clear() = {"yakuman":0, "han":0, "fu":0}
+    for formed_hand in situation_input["formed_hands"]:
+        calc_dict = {"yakuman":0, "han":0, "fu":0}
         # 符計算
         fu_calc(formed_hand, situation_input, yaku_set, calc_dict)
         
         # 翻計算
         han_calc(formed_hand, situation_input, yaku_set, calc_dict)
 
-        point = point_calc(calc_dict)
+        basic_point = point_calc(calc_dict)
 
-        if (max_point < point):
-            max_point = point
+        if (max_point < basic_point):
+            max_point = basic_point
+            max_yaku_set = yaku_set.copy()
 
+    if (situation_input["agari_situation"] == "tsumo"): # ツモ
+        if (situation_input["jikaze"] == "east"):   # 親
+            payment_child = helper.ceil(max_point * 2, 2)   # 子の支払い
+            payment_host = helper.ceil(max_point * 4, 2)    # 親の支払い
+            payment_sum = payment_child + payment_host 
 
-     
-    # 基本点の計算
-    # 役満の場合
-    # if yakuman_type == '役満':
-    #     if host:
-    #         if agari == 'ツモ':
-    #             result = {'合計':48000, '子': 16000}
-
-    #         elif agari == 'ロン':
-    #             result = {'合計':48000}
-
-    #     else:
-    #         if agari == 'ツモ':
-    #             result = {'合計':32000, '親':16000, '子': 8000}
-                
-    #         elif agari == 'ロン':
-    #             result = {'合計':32000}
-
-    #     return result
+        else:                                       # 子
+            payment_child = helper.ceil(max_point, 2)       # 子の支払い
+            payment_host = helper.ceil(max_point * 2, 2)    # 親の支払い
+            payment_sum = payment_child + payment_host
             
-    # 役満以外の場合
-    basic_point = 0
+        result = "合計: " + str(payment_sum) + " 子の支払い: " + str(payment_child)  + " 親の支払い: " + str(payment_host)
 
-    if han >= 13:   # 数え役満
-        basic_point = 8000
 
-    elif han >= 11: # 三倍満
-        basic_point = 6000
-    
-    elif han >= 8:  # 倍満
-        basic_point = 4000
-    
-    elif han >= 6:  # 跳満
-        basic_point = 3000
-    
-    elif han >= 5:  # 満貫
-        basic_point = 2000
-    
+    elif (situation_input["agari_situation"] == "ron"): # ロン
+        if (situation_input["jikaze"] == "east"):   # 親
+            payment = helper.ceil(max_point * 6, 2)
+            pass
+
+        else:                                       # 子
+            payment = helper.ceil(max_point * 4, 2)
+        
+        result = "合計: " + str(payment)
+
     else:
-        basic_point = (2 ** (han + 2)) * fu
+        print("エラー")
 
-        if basic_point > 2000:  # 満貫以下で基本点が2000点を超えた場合
-            basic_point = 2000
-    
-    # 満貫未満の基本点切り上げ
-    if han < 5 and basic_point < 2000:
-        basic_point = helper.ceil(basic_point, 3)
-    
-    # 最終的な点数の計算
-    if situation_input["agari_situation"] == "ツモ":
-        payment = helper.ceil(basic_point, 3)
-        result = {"親":{'合計':payment*6, '子':payment*2}, "子":{'合計':payment*4, '親':payment*2, '子':payment}}
-    
-    elif situation_input["agari_situation"] == "ロン":
-        payment = helper.ceil(basic_point, 3)
-        result = {"親":{'合計':payment*6}, "子":{'合計':payment*4}}
-    
     return result

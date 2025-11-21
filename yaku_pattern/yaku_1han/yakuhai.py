@@ -19,7 +19,7 @@ def check_yaku_hai(jikaze, bakaze, formed_hand, formed_call) -> dict:
     target = {mentsu[0] for mentsu in hand}
 
     # マッチするものを集合に格納
-    yakuhai_set = {k for k, v in yaku_hai.items if v in target}
+    yakuhai_set = {k for k, v in yaku_hai.items() if v in target}
 
     # # 役ごとに刻子ができているか判定する
     # for mentsu in hand:

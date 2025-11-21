@@ -1,6 +1,7 @@
 from typing import TypedDict, List
 
 from agari_pattern import agari_hands
+from point_calculate import main_calc_process
 from yaku_pattern import *
 
 class FormedHands(TypedDict):
@@ -31,17 +32,17 @@ class SituationInput(TypedDict):
 
 # 暫定値(立直、一発、二盃口、)
 riichi = 1                              # 立直あり
-agari_situation = "ron"                 # ロンアガリ
+agari_situation = "tsumo"                 # ロンアガリ
 last_tsumo = False                      # ラスヅモではない
-ippatsu = True			                # 一発
+ippatsu = False			                # 一発
 rinshan = False			                # 嶺上開花
 chankan = False			                # 槍槓
 jikaze = "south"	                    # 自風(east, south, west, north)
 bakaze = "east"	                        # 場風(east, south, west, north)
-agari_tile = "red"			            # アガリ牌
-dora_tiles = ["3m", "white"]	        # ドラ牌
-hand_tiles = ["red","red"] 
-call_tiles = [{"calling":"pon","mentsu":[["north","north","north"],]},{"calling":"min_kan","mentsu":[["west","west","west","west"],["9p","9p","9p","9p"]]},{"calling":"an_kan","mentsu":[["3p","3p","3p","3p"],]}]
+agari_tile = "7s"			            # アガリ牌
+dora_tiles = ["2s", "1p"]	        # ドラ牌
+hand_tiles = ["3s","3s","3s","8p","7p","6p","8p","7p","6p","5s","6s","7s","3m","3m"] 
+call_tiles = []
 
 situation_input:SituationInput = {
     "riichi": riichi,
@@ -65,6 +66,8 @@ situation_input:SituationInput = {
 agari_hands.main_agari_process(situation_input)
 
 situation_input["menzen"] = not situation_input["formed_calls"]
+
+print(main_calc_process(situation_input))
 
 # hand_tiles = ["","","","","","","","","","","","","",""]
 # hand_tiles = ["2m","3m","4m","8m","8m","5s","6s","6s","7s","7s","8s","2p","3p","4p"] # 断幺
@@ -100,35 +103,35 @@ situation_input["menzen"] = not situation_input["formed_calls"]
 # print("混老頭のやつ", check_hon_routou(situation_input))
 # print("清老頭のやつ", check_chin_routou(situation_input))
 
-yaku_set = set()
-for formed_hand in situation_input["formed_hands"]:
-    # print("九蓮宝燈チェック:", check_chuuren(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
-    # print("国士無双チェック:", check_kokushi_musou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
-    # print("緑一色字一色チェック:", check_ryu_iiso_tsu_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
-    # print("清老頭混老頭チェック:", check_chin_routou(situation_input["hand_tiles"], situation_input["formed_calls"]))
+# yaku_set = set()
+# for formed_hand in situation_input["formed_hands"]:
+#     # print("九蓮宝燈チェック:", check_chuuren(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
+#     # print("国士無双チェック:", check_kokushi_musou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
+#     # print("緑一色字一色チェック:", check_ryu_iiso_tsu_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
+#     # print("清老頭混老頭チェック:", check_chin_routou(situation_input["hand_tiles"], situation_input["formed_calls"]))
    
-    yaku_set.add(check_chin_routou(situation_input["hand_tiles"], situation_input["formed_calls"]))
-    yaku_set.add(check_chuuren_poutou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
-    yaku_set.add(check_daisangen(formed_hand, situation_input["formed_calls"]))
-    yaku_set.add(check_daisuushi(formed_hand, situation_input["formed_calls"]))
-    yaku_set.add(check_kokushi_musou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
-    yaku_set.add(check_ryu_iiso_tsu_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
-    yaku_set.add(check_su_anko(formed_hand))
-    yaku_set.add(check_su_kantsu(formed_hand, situation_input["formed_calls"]))
+#     yaku_set.add(check_chin_routou(situation_input["hand_tiles"], situation_input["formed_calls"]))
+#     yaku_set.add(check_chuuren_poutou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
+#     yaku_set.add(check_daisangen(formed_hand, situation_input["formed_calls"]))
+#     yaku_set.add(check_daisuushi(formed_hand, situation_input["formed_calls"]))
+#     yaku_set.add(check_kokushi_musou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
+#     yaku_set.add(check_ryu_iiso_tsu_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
+#     yaku_set.add(check_su_anko(formed_hand))
+#     yaku_set.add(check_su_kantsu(formed_hand, situation_input["formed_calls"]))
 
 
-for formed_hand in situation_input["formed_hands"]:
-    # print("七対子チェック:", check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"]))
+# for formed_hand in situation_input["formed_hands"]:
+#     # print("七対子チェック:", check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"]))
 
-    yaku_set.add("断幺" if check_tanyao(formed_hand, situation_input["formed_calls"]) else None)
-    a = (check_yaku_hai(situation_input["jikaze"], situation_input["bakaze"], formed_hand, situation_input["formed_calls"]))
-    yaku_set.add("七対子" if check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"]) else None)
-    yaku_set.add("一気通貫" if check_ikkitsuukan(formed_hand, situation_input["formed_calls"]) else None)
-    yaku_set.add("三色同順" if check_sansyoku_dojun(formed_hand, situation_input["formed_calls"]) else None)
-    yaku_set.add("三色同刻" if check_sansyoku_doko(formed_hand, situation_input["formed_calls"]) else None)
-    yaku_set.add("対々和" if check_toitoi_ho(formed_hand, situation_input["formed_calls"]) else None)
-    yaku_set.add(check_jun_chanta(formed_hand, situation_input["formed_calls"]))
-    yaku_set.add(check_ryan_peekou(situation_input["menzen"], formed_hand))
-    yaku_set.add(check_chin_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
+#     yaku_set.add("断幺" if check_tanyao(formed_hand, situation_input["formed_calls"]) else None)
+#     a = (check_yaku_hai(situation_input["jikaze"], situation_input["bakaze"], formed_hand, situation_input["formed_calls"]))
+#     yaku_set.add("七対子" if check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"]) else None)
+#     yaku_set.add("一気通貫" if check_ikkitsuukan(formed_hand, situation_input["formed_calls"]) else None)
+#     yaku_set.add("三色同順" if check_sansyoku_dojun(formed_hand, situation_input["formed_calls"]) else None)
+#     yaku_set.add("三色同刻" if check_sansyoku_doko(formed_hand, situation_input["formed_calls"]) else None)
+#     yaku_set.add("対々和" if check_toitoi_ho(formed_hand, situation_input["formed_calls"]) else None)
+#     yaku_set.add(check_jun_chanta(formed_hand, situation_input["formed_calls"]))
+#     yaku_set.add(check_ryan_peekou(situation_input["menzen"], formed_hand))
+#     yaku_set.add(check_chin_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
 
     
