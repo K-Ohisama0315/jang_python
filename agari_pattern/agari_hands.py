@@ -210,16 +210,15 @@ def main_agari_process(situation_input):
         
         # 暗槓を手牌に追加する
         
-        for agari in agari_dict_list:
-            for call_tiles in situation_input["call_tiles"]:
-                if (call_tiles["calling"] == "an_kan"):
-                    for an_kan_tiles in call_tiles["mentsu"]:
-                        agari["hand"].append(an_kan_tiles)
-                else:
+        for call_tiles in situation_input["call_tiles"]:
+            if (call_tiles["calling"] == "an_kan"):
+                for an_kan_tiles in call_tiles["mentsu"]:
+                    agari_dict_list[0]["hand"].append(an_kan_tiles)
+            else:
                     for an_kan_tiles in call_tiles["mentsu"]:
                         situation_input["formed_calls"].append(an_kan_tiles)
             
-            final_agari_list.append(agari)
+            final_agari_list = agari_dict_list.copy()
 
     situation_input["formed_hands"] = final_agari_list
 
