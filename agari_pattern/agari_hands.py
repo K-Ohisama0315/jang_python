@@ -197,7 +197,7 @@ def main_agari_process(situation_input):
             full_tuple_mentsu = (tuple(tuple_mentsu), tuple(hand["head"]))
             unique_all_mentsu_set.add(full_tuple_mentsu)
 
-
+    agari_dict_list = []
     for agari_tuple in unique_all_mentsu_set:
         # タプルをリストに戻し、文字に変換する
         agari_list = ([[const.tiles_swap[num] for num in list(m)] for m in agari_tuple[0]]), \
@@ -218,9 +218,8 @@ def main_agari_process(situation_input):
                     for an_kan_tiles in call_tiles["mentsu"]:
                         situation_input["formed_calls"].append(an_kan_tiles)
             
-            final_agari_list = agari_dict_list.copy()
 
-    situation_input["formed_hands"] = final_agari_list
+    situation_input["formed_hands"] = agari_dict_list.copy()
 
         
     

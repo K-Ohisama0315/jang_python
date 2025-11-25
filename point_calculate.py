@@ -89,7 +89,7 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
         calc_dict["fu"] += fu_work * yaochu_bonus
 
     # 雀頭が役牌の場合
-    if ((const.tiles[formed_hand["head"][0]]) > 30):
+    if (formed_hand["head"][0] in ("white", "green", "red", situation_input["jikaze"], situation_input["bakaze"])):
         # 平和は成立しない
         is_pinfu = False
 
@@ -322,8 +322,10 @@ def main_calc_process (situation_input):
             
 
     if (situation_input["agari_situation"] == "tsumo"): # ツモ
+        payment_child = 0
+        payment_host = 0
         if (situation_input["jikaze"] == "east"):   # 親
-            payment_child = helper.ceil(max_point * 4, 2)   # 子の支払い
+            payment_child = helper.ceil(max_point * 2, 2)   # 子の支払い
             payment_sum = payment_child * 3
 
 
@@ -348,7 +350,18 @@ def main_calc_process (situation_input):
     else:
         print("エラー")
 
+    a = [1,2,3]
+    
+    hand_tiles = situation_input["hand_tiles"].copy()
+    hand_tiles = [const.tiles[tile] for tile in hand_tiles]
+    hand_tiles.sort()
+    hand_tiles = [const.tiles_swap[tile] for tile in hand_tiles]
+    hand_tiles.remove(situation_input["agari_tile"])
+    call_tiles = [call_tile["mentsu"] for call_tile in situation_input["call_tiles"]]
+
+    print(hand_tiles, call_tiles, situation_input["agari_tile"])
+
     print(result)
     print(max_calc_dict)
     print(max_yaku_set)
-    return 
+    return
