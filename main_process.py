@@ -31,18 +31,18 @@ class SituationInput(TypedDict):
     formed_calls: List[List[str]]   # 鳴き牌(暗槓抜き)
 
 # 暫定値(立直、一発、二盃口、)
-riichi = 1                              # 立直あり
-agari_situation = "ron"                 # ロンアガリ
-last_tsumo = False                      # ラスヅモではない
-ippatsu = False			                # 一発
-rinshan = False			                # 嶺上開花
-chankan = False			                # 槍槓
-jikaze = "south"	                    # 自風(east, south, west, north)
-bakaze = "east"	                        # 場風(east, south, west, north)
-agari_tile = "7s"			            # アガリ牌
-dora_tiles = ["2s", "1p"]	        # ドラ牌
-hand_tiles = ["7s","7s","7s","8s","8s","2p","2p","2p"] 
-call_tiles = call_tiles = [{"calling":"an_kan", "mentsu": [["3m", "3m", "3m","3m"],]},{"calling":"min_kan", "mentsu": [["3m", "3m", "3m","3m"],]},]
+riichi = 1
+agari_situation = "ron"
+last_tsumo = False
+ippatsu = False
+rinshan = False
+chankan = False
+jikaze = "south"
+bakaze = "east"
+agari_tile = "red"
+dora_tiles = ["north"]
+hand_tiles = ["2p", "3p", "4p", "3s", "4s", "5s", "red"]
+call_tiles = [{"calling": "an_kan", "mentsu": [["1m", "1m", "1m", "1m"], ["9m", "9m", "9m", "9m"]]}]
 
 situation_input:SituationInput = {
     "riichi": riichi,
