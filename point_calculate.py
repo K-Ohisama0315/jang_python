@@ -178,7 +178,8 @@ def han_calc_general(situation_input, yaku_set) -> int:
 
     # ドラの計算
     dora = 0
-    dora = sum(hand_tile in situation_input["dora_tiles"] for hand_tile in situation_input["hand_tiles"])
+    dora += sum(situation_input["hand_tiles"].count(dora_tile)  for dora_tile in situation_input["dora_tiles"])
+    dora += sum(mentsu.count(dora_tile) for dora_tile in situation_input["dora_tiles"] for call_tiles in situation_input["call_tiles"] for mentsu in call_tiles["mentsu"])
     
     if dora > 0:
         han += dora
@@ -211,6 +212,8 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
 
     calc_dict["yakuman"] += len(yaku_set.intersection(yakuman))
     calc_dict["yakuman"] += 2 * len(yaku_set.intersection(double_yakuman))
+
+    yaku_set.discard(None)
 
     # 役満があればリターン
     if (calc_dict["yakuman"] != 0):
@@ -320,14 +323,14 @@ def main_calc_process (situation_input):
 
     if (situation_input["agari_situation"] == "tsumo"): # ツモ
         if (situation_input["jikaze"] == "east"):   # 親
-            payment_child = helper.ceil(max_point * 2, 2)   # 子の支払い
-            payment_host = helper.ceil(max_point * 4, 2)    # 親の支払い
-            payment_sum = payment_child + payment_host 
+            payment_child = helper.ceil(max_point * 4, 2)   # 子の支払い
+            payment_sum = payment_child * 3
+
 
         else:                                       # 子
             payment_child = helper.ceil(max_point, 2)       # 子の支払い
             payment_host = helper.ceil(max_point * 2, 2)    # 親の支払い
-            payment_sum = payment_child + payment_host
+            payment_sum = payment_child * 2 + payment_host
             
         result = "合計: " + str(payment_sum) + " 子の支払い: " + str(payment_child)  + " 親の支払い: " + str(payment_host)
 
