@@ -41,13 +41,23 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
         is_pinfu = False
 
         tile_str = next(iter(mentsu_set))
+        if (tile_str == situation_input["agari_tile"] and formed_hand["wait"] == "shanpon"):
+            fu_work = 2
+        elif (len(mentsu) == 3):
+            fu_work = 4
+        elif (len(mentsu) == 4):
+            fu_work = 16
+        else:
+            print("符計算のエラー(暗刻・暗槓)")
+            return
+
         tile = const.tiles[tile_str]
 
         # 么九牌用に倍率設定
         yaochu_bonus = 1 if (tile < 30 and tile % 10 not in (1, 9)) else 2
 
         # 暗槓の場合は16符、暗刻の場合は4符追加(么九牌は2倍)
-        calc_dict["fu"] += 16 * yaochu_bonus if (len(mentsu) == 4) else 4 * yaochu_bonus
+        calc_dict["fu"] += fu_work * yaochu_bonus
 
     # 面子の形によるボーナス(鳴き牌)
     for mentsu in situation_input["formed_calls"]:
@@ -62,13 +72,21 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
             continue
 
         tile_str = next(iter(mentsu_set))
+        if (len(mentsu) == 3):
+            fu_work = 2
+        elif (len(mentsu) == 4):
+            fu_work = 8
+        else:
+            print("符計算のエラー(明刻・明槓)")
+            return
+
         tile = const.tiles[tile_str]
 
         # 么九牌用に倍率設定
         yaochu_bonus = 1 if (tile < 30 and tile % 10 not in (1, 9)) else 2
 
         # 明槓の場合は8符、明刻の場合は2符追加(么九牌は2倍)
-        calc_dict["fu"] += 8 * yaochu_bonus if (len(mentsu) == 4) else 2 * yaochu_bonus
+        calc_dict["fu"] += fu_work * yaochu_bonus
 
     # 雀頭が役牌の場合
     if ((const.tiles[formed_hand["head"][0]]) > 30):
@@ -277,6 +295,7 @@ def main_calc_process (situation_input):
     """
     # 役満数、翻、符を0で初期化する
     calc_dict = {"yakuman":0, "han":0, "fu":0}
+    max_calc_dict = {}
     max_point = 0
 
     # 役集合の宣言
@@ -296,6 +315,8 @@ def main_calc_process (situation_input):
         if (max_point < basic_point):
             max_point = basic_point
             max_yaku_set = yaku_set.copy()
+            max_calc_dict = calc_dict.copy()
+            
 
     if (situation_input["agari_situation"] == "tsumo"): # ツモ
         if (situation_input["jikaze"] == "east"):   # 親
@@ -324,4 +345,7 @@ def main_calc_process (situation_input):
     else:
         print("エラー")
 
-    return result
+    print(result)
+    print(max_calc_dict)
+    print(max_yaku_set)
+    return 

@@ -130,7 +130,7 @@ def find_wait(agari_dict, agari_tile):
             continue
 
         if (len(set(mentsu)) == 1): # 双ポン待ちのとき
-            wait_set.add("syanpon")
+            wait_set.add("shanpon")
             continue
 
         if (min(mentsu) < agari_tile_num < max(mentsu)):    # 嵌張待ちのとき
