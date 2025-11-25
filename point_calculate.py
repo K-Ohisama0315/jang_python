@@ -188,7 +188,7 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     yaku_set.add(check_daisuushi(formed_hand, situation_input["formed_calls"]))
     yaku_set.add(check_kokushi_musou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
     yaku_set.add(check_ryu_iiso_tsu_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
-    yaku_set.add(check_su_anko(formed_hand))
+    yaku_set.add(check_su_anko(formed_hand, situation_input["agari_situation"]))
     yaku_set.add(check_su_kantsu(formed_hand, situation_input["formed_calls"]))
 
     calc_dict["yakuman"] += len(yaku_set.intersection(yakuman))
