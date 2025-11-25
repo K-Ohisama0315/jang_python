@@ -7,7 +7,7 @@ from yaku_pattern import *
 class FormedHands(TypedDict):
     hand: List[List[str]]           # 面子
     head: List[str]                 # 雀頭
-    wait: str                       # 待ち方(ryanmen, penchan, kanchan, syanpon, tanki)
+    wait: str                       # 待ち方(ryanmen, penchan, kanchan, shanpon, tanki)
 
 class CallTiles(TypedDict):
     calling: str                # 鳴き方(pon, chi, min_kan, ka_kan, an_kan)
@@ -32,7 +32,7 @@ class SituationInput(TypedDict):
 
 # 暫定値(立直、一発、二盃口、)
 riichi = 1                              # 立直あり
-agari_situation = "tsumo"                 # ロンアガリ
+agari_situation = "ron"                 # ロンアガリ
 last_tsumo = False                      # ラスヅモではない
 ippatsu = False			                # 一発
 rinshan = False			                # 嶺上開花
@@ -41,8 +41,8 @@ jikaze = "south"	                    # 自風(east, south, west, north)
 bakaze = "east"	                        # 場風(east, south, west, north)
 agari_tile = "7s"			            # アガリ牌
 dora_tiles = ["2s", "1p"]	        # ドラ牌
-hand_tiles = ["3s","3s","3s","8p","7p","6p","8p","7p","6p","5s","6s","7s","3m","3m"] 
-call_tiles = []
+hand_tiles = ["7s","7s","7s","8s","8s","2p","2p","2p"] 
+call_tiles = call_tiles = [{"calling":"an_kan", "mentsu": [["3m", "3m", "3m","3m"],]},{"calling":"min_kan", "mentsu": [["3m", "3m", "3m","3m"],]},]
 
 situation_input:SituationInput = {
     "riichi": riichi,
@@ -67,7 +67,7 @@ agari_hands.main_agari_process(situation_input)
 
 situation_input["menzen"] = not situation_input["formed_calls"]
 
-print(main_calc_process(situation_input))
+main_calc_process(situation_input)
 
 # hand_tiles = ["","","","","","","","","","","","","",""]
 # hand_tiles = ["2m","3m","4m","8m","8m","5s","6s","6s","7s","7s","8s","2p","3p","4p"] # 断幺
@@ -134,4 +134,4 @@ print(main_calc_process(situation_input))
 #     yaku_set.add(check_ryan_peekou(situation_input["menzen"], formed_hand))
 #     yaku_set.add(check_chin_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
 
-    
+a = 0
