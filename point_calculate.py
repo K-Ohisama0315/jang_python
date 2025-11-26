@@ -312,7 +312,7 @@ def main_calc_process (situation_input):
     """
     # 役満数、翻、符を0で初期化する
     calc_dict = {"yakuman":0, "han":0, "fu":0}
-    max_calc_dict = {}
+    max_calc_dict = {"yakuman":0, "han":0, "fu":0}
     max_point = 0
     daten = ""
 
@@ -322,6 +322,7 @@ def main_calc_process (situation_input):
 
     for formed_hand in situation_input["formed_hands"]:
         calc_dict = {"yakuman":0, "han":0, "fu":0}
+        yaku_set.clear()
         if (not formed_hand):
             continue
         
@@ -333,10 +334,13 @@ def main_calc_process (situation_input):
 
         basic_point = point_calc(calc_dict)
 
-        if (max_point < basic_point):
-            max_point = basic_point
-            max_yaku_set = yaku_set.copy()
-            max_calc_dict = calc_dict.copy()
+        if (max_point <= basic_point):
+            if (max_calc_dict["han"] <= calc_dict["han"]):
+                if (max_calc_dict["fu"] <= calc_dict["fu"]):
+                    max_point = basic_point
+                    max_yaku_set.clear()
+                    max_yaku_set = yaku_set.copy()
+                    max_calc_dict = calc_dict.copy()
 
     if (max_point > 8000):
         daten = str(calc_dict["yakuman"]).translate(num_to_kanji) + "倍役満"
