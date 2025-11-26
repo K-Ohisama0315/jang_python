@@ -1,3 +1,5 @@
+from ..yaku_2han.toitoi_ho import check_toitoi_ho
+
 yaochuu_tiles = ["1m", "9m", "1p", "9p", "1s", "9s",
                  "east", "south", "west", "north",
                  "white", "green", "red"]
@@ -9,6 +11,10 @@ def check_jun_chanta(formed_hand, formed_call) -> str:
     """
     純全帯么九、混全帯么九が成立するか判定する関数
     """
+    # 手牌がすべて刻子でできていた場合、Noneを返す
+    if (check_toitoi_ho(formed_hand, formed_call)):
+        return None
+
     hand = formed_hand["hand"].copy()
 
     # 副露牌を手牌に追加
