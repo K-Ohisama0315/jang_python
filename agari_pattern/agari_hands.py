@@ -217,9 +217,10 @@ def main_agari_process(situation_input):
             else:
                     for an_kan_tiles in call_tiles["mentsu"]:
                         situation_input["formed_calls"].append(an_kan_tiles)
-            
+    
+    final_agari_list.append(agari_dict_list.copy())            
 
-    situation_input["formed_hands"] = agari_dict_list.copy()
+    situation_input["formed_hands"] = final_agari_list
 
         
     
