@@ -2,6 +2,12 @@ import helper
 import const
 from yaku_pattern import *
 
+# 数値を漢数字に置き換える(二倍役満とかに使う)
+num_to_kanji = str.maketrans({
+    '0': '〇', '1': '一', '2': '二', '3': '三', '4': '四',
+    '5': '五', '6': '六', '7': '七', '8': '八', '9': '九'
+})
+
                                                                       
 #     ▄▄▄▄                                           ▄▄▄▄               
 #    ██▀▀▀                                           ▀▀██               
@@ -10,7 +16,8 @@ from yaku_pattern import *
 #    ██      ██    ██            ██        ▄██▀▀▀██    ██      ██       
 #    ██      ██▄▄▄███            ▀██▄▄▄▄█  ██▄▄▄███    ██▄▄▄   ▀██▄▄▄▄█ 
 #    ▀▀       ▀▀▀▀ ▀▀              ▀▀▀▀▀    ▀▀▀▀ ▀▀     ▀▀▀▀     ▀▀▀▀▀  
-#                     ▀▀▀▀▀▀▀▀▀▀                                        
+#                     ▀▀▀▀▀▀▀▀▀▀                                       
+# 符計算関数 
 def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     # 基礎点
     calc_dict["fu"] = 20
@@ -20,10 +27,11 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
 
     # 先頭行に牌が14枚ある場合は特殊アガリ(国士無双、九蓮宝燈、七対子)なのでリターン
     if (len(formed_hand["hand"][0]) == 14):
-    # 七対子は25符固定
+        # 七対子は25符固定
         if (check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"])):
             calc_dict["fu"] = 25
             return
+        # 国士無双、九蓮宝燈は符計算が必要ない
         else:
             calc_dict["fu"] = 0
         return
@@ -41,11 +49,12 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
         is_pinfu = False
 
         tile_str = next(iter(mentsu_set))
+        # シャンポン待ちのロンは符計算では明刻扱い
         if (tile_str == situation_input["agari_tile"] and formed_hand["wait"] == "shanpon"):
             fu_work = 2
-        elif (len(mentsu) == 3):
+        elif (len(mentsu) == 3):    # 暗刻
             fu_work = 4
-        elif (len(mentsu) == 4):
+        elif (len(mentsu) == 4):    # 暗槓
             fu_work = 16
         else:
             print("符計算のエラー(暗刻・暗槓)")
@@ -72,9 +81,9 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
             continue
 
         tile_str = next(iter(mentsu_set))
-        if (len(mentsu) == 3):
+        if (len(mentsu) == 3):      # 明刻
             fu_work = 2
-        elif (len(mentsu) == 4):
+        elif (len(mentsu) == 4):    # 明槓
             fu_work = 8
         else:
             print("符計算のエラー(明刻・明槓)")
@@ -210,6 +219,7 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     yaku_set.add(check_su_anko(formed_hand, situation_input["agari_situation"]))
     yaku_set.add(check_su_kantsu(formed_hand, situation_input["formed_calls"]))
 
+    # 役満の数、ダブル役満の数をカウント
     calc_dict["yakuman"] += len(yaku_set.intersection(yakuman))
     calc_dict["yakuman"] += 2 * len(yaku_set.intersection(double_yakuman))
 
@@ -217,6 +227,8 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
 
     # 役満があればリターン
     if (calc_dict["yakuman"] != 0):
+        # 役満以外の役を削除
+        yaku_set &= (set(yakuman) | set(double_yakuman))
         return
 
     # 状況で確定する役を取得
@@ -300,6 +312,7 @@ def main_calc_process (situation_input):
     calc_dict = {"yakuman":0, "han":0, "fu":0}
     max_calc_dict = {}
     max_point = 0
+    daten = ""
 
     # 役集合の宣言
     yaku_set = set()
@@ -307,6 +320,7 @@ def main_calc_process (situation_input):
 
     for formed_hand in situation_input["formed_hands"]:
         calc_dict = {"yakuman":0, "han":0, "fu":0}
+        
         # 符計算
         fu_calc(formed_hand, situation_input, yaku_set, calc_dict)
         
@@ -319,7 +333,19 @@ def main_calc_process (situation_input):
             max_point = basic_point
             max_yaku_set = yaku_set.copy()
             max_calc_dict = calc_dict.copy()
-            
+
+    if (max_point > 8000):
+        daten = str(calc_dict["yakuman"]).translate(num_to_kanji) + "倍役満"
+    elif (max_point == 8000):
+        daten = "役満"
+    elif (max_point == 6000):
+        daten = "三倍満"
+    elif (max_point == 4000):
+        daten = "倍満"
+    elif (max_point == 3000):
+        daten = "跳満"
+    elif (max_point == 2000):
+        daten = "満貫"
 
     if (situation_input["agari_situation"] == "tsumo"): # ツモ
         payment_child = 0
@@ -361,7 +387,7 @@ def main_calc_process (situation_input):
 
     print(hand_tiles, call_tiles, situation_input["agari_tile"])
 
-    print(result)
+    print(result, daten)
     print(max_calc_dict)
     print(max_yaku_set)
     return
