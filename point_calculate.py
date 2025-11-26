@@ -1,3 +1,5 @@
+import jaconv
+
 import helper
 import const
 from yaku_pattern import *
@@ -244,7 +246,7 @@ def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     yaku_set.add("対々和" if check_toitoi_ho(formed_hand, situation_input["formed_calls"]) else None)
     yaku_set.add(check_jun_chanta(formed_hand, situation_input["formed_calls"]))
     yaku_set.add(check_ryan_peekou(situation_input["menzen"], formed_hand))
-    yaku_set.add(check_chin_iiso(situation_input["hand_tiles"], situation_input["formed_calls"]))
+    yaku_set.add(check_chin_iiso(situation_input["hand_tiles"], situation_input["call_tiles"]))
 
     yaku_set.discard(None)
     yaku_set.discard(False)
@@ -320,6 +322,8 @@ def main_calc_process (situation_input):
 
     for formed_hand in situation_input["formed_hands"]:
         calc_dict = {"yakuman":0, "han":0, "fu":0}
+        if (not formed_hand):
+            continue
         
         # 符計算
         fu_calc(formed_hand, situation_input, yaku_set, calc_dict)
@@ -385,8 +389,8 @@ def main_calc_process (situation_input):
     hand_tiles.remove(situation_input["agari_tile"])
     call_tiles = [call_tile["mentsu"] for call_tile in situation_input["call_tiles"]]
 
+    print(jaconv.alphabet2kata(situation_input["agari_situation"]))
     print(hand_tiles, call_tiles, situation_input["agari_tile"])
-
     print(result, daten)
     print(max_calc_dict)
     print(max_yaku_set)

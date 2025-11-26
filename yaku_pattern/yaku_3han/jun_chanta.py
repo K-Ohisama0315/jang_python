@@ -29,7 +29,7 @@ def check_jun_chanta(formed_hand, formed_call) -> str:
             chanta.append(mentsu)
     
     # 雀頭に么九牌が含まれている場合
-    if formed_hand["head"][0] in yaochuu_tiles:
+    if formed_hand["head"] and formed_hand["head"][0] in yaochuu_tiles:
         chanta.append(formed_hand["head"])
     
     # 么九牌が含まれる面子が5種類未満の場合は、純全帯么九・混全帯么九は成立しない
