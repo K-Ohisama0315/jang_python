@@ -155,7 +155,7 @@ def han_calc_general(situation_input, yaku_set) -> int:
     han = 0
     # 立直している場合
     # 副露牌がある場合は立直していないとみなす
-    if not situation_input["call_tiles"]:
+    if not situation_input["formed_call"]:
         if situation_input["riichi"] == 2:
             han += 2
             yaku_set.add("ダブル立直")
