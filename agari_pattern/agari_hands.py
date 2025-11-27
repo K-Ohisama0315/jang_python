@@ -197,7 +197,7 @@ def main_agari_process(situation_input):
             full_tuple_mentsu = (tuple(tuple_mentsu), tuple(hand["head"]))
             unique_all_mentsu_set.add(full_tuple_mentsu)
 
-    agari_dict_list = {}
+    agari_dict_list = []
     for agari_tuple in unique_all_mentsu_set:
         # タプルをリストに戻し、文字に変換する
         agari_list = ([[const.tiles_swap[num] for num in list(m)] for m in agari_tuple[0]]), \
@@ -206,7 +206,10 @@ def main_agari_process(situation_input):
         agari_dict = {y: x for y, x in zip((["hand", "head"]), agari_list)}
         
         # 待ち方を格納する関数を呼び出す
-        agari_dict_list = find_wait(agari_dict, situation_input["agari_tile"])
+        
+        a = (find_wait(agari_dict, situation_input["agari_tile"]))
+        for x in a:
+            agari_dict_list.append(x)
         
         # 暗槓を手牌に追加する
         

@@ -15,8 +15,8 @@ def check_su_anko(formed_hand, agari_situation) -> str:
         if tile_count >= 3:
             anko_count += 1
 
-        if wait == "shanpon" and agari_situation == "ron":
-            anko_count -= 1
+    if wait == "shanpon" and agari_situation == "ron":
+        anko_count -= 1
     
     # 四暗刻単騎の場合
     if anko_count == 4 and wait == "tanki":
