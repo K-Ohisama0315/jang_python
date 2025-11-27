@@ -343,7 +343,10 @@ def main_calc_process (situation_input):
     if (max_point > 8000):
         daten = str(calc_dict["yakuman"]).translate(num_to_kanji) + "倍役満"
     elif (max_point == 8000):
-        daten = "役満"
+        if (not max_calc_dict["yakuman"]):
+            daten = "役満"
+        else:
+            daten = "数え役満"
     elif (max_point == 6000):
         daten = "三倍満"
     elif (max_point == 4000):
