@@ -36,14 +36,15 @@ class SituationInput(TypedDict):
 riichi = 1
 agari_situation = "ron"
 last_tsumo = False
-ippatsu = True
+ippatsu = False
 rinshan = False
 chankan = False
 jikaze = "east"
 bakaze = "east"
-agari_tile = "2s"
-dora_tiles = ["north", "west"]
-hand_tiles = ["3m", "4m", "5m", "6p", "7p", "8p", "2s", "3s", "4s", "6s", "7s", "8s", "5p", "5p"]
+agari_tile = "9s"
+dora_tiles = ["5s", "2m"]
+red_dora_tiles = 0
+hand_tiles = ["1p", "1p", "1p", "2p", "2p", "2p", "3p", "3p", "3p", "9s", "9s", "9s", "1m", "1m"]
 call_tiles = []
 
 situation_input:SituationInput = {
