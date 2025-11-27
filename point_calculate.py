@@ -154,12 +154,14 @@ def han_calc_general(situation_input, yaku_set) -> int:
 
     han = 0
     # 立直している場合
-    if situation_input["riichi"] == 2:
-        han += 2
-        yaku_set.add("ダブル立直")
-    elif situation_input["riichi"] == 1:
-        han += 1
-        yaku_set.add("立直")
+    # 副露牌がある場合は立直していないとみなす
+    if not situation_input["call_tiles"]:
+        if situation_input["riichi"] == 2:
+            han += 2
+            yaku_set.add("ダブル立直")
+        elif situation_input["riichi"] == 1:
+            han += 1
+            yaku_set.add("立直")
 
     # 面前清自摸和の場合
     if situation_input["menzen"] and situation_input["agari_situation"] == "tsumo":
@@ -167,17 +169,19 @@ def han_calc_general(situation_input, yaku_set) -> int:
         yaku_set.add("面前清自摸和")
     
     # 槍槓の場合
-    if situation_input["chankan"]:
+    # 面前清自摸和と槍槓がどちらもTrueの場合、面前清自摸和を優先する
+    if situation_input["chankan"] and situation_input["agari_situation"] == "ron":
         han += 1
         yaku_set.add("槍槓")
 
     # 嶺上開花の場合
-    if situation_input["rinshan"]:
+    if situation_input["rinshan"] and situation_input["agari_situation"] == "tsumo":
         han += 1
         yaku_set.add("嶺上開花")
 
     # 海底摸月の場合
-    if situation_input["last_tsumo"] and situation_input["agari_situation"] == "tsumo":
+    # 海底摸月と嶺上開花がどちらもTrueの場合、嶺上開花を優先する
+    if situation_input["last_tsumo"] and situation_input["agari_situation"] == "tsumo" and not situation_input["rinshan"]:
         han += 1
         yaku_set.add("海底摸月")
 
@@ -186,8 +190,8 @@ def han_calc_general(situation_input, yaku_set) -> int:
         han += 1
         yaku_set.add("海底摸月")
 
-    # 一発の場合
-    if situation_input["ippatsu"]:
+    # 一発の場合(嶺上開花と一発は共存しない)
+    if situation_input["ippatsu"] and not situation_input["rinshan"]:
         han += 1
         yaku_set.add("一発")
 
