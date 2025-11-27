@@ -1,3 +1,5 @@
+import collections
+
 import const
 
 def check_ryan_peekou(menzen, formed_hand) -> str:
@@ -17,21 +19,21 @@ def check_ryan_peekou(menzen, formed_hand) -> str:
         if const.find_shuntsu(mentsu):
             shuntsu_list.append(mentsu)
     
-    # 一盃口、二盃口が成立するか判定する
-    finish_hand = []
-    for tile in shuntsu_list:
-        # 順序が完全に一致する重複を探す
-        finish_hand = set(tuple(tile) for tile in shuntsu_list)
-    
-    # 一盃口、二盃口であれば、順子の数と重複を除いた順子の数が異なる
-    # 二盃口の判定
-    if len(shuntsu_list) - len(finish_hand) == 2:
+    # 面子をタプルに置き換える
+    shuntsu_tuple = [tuple(mentsu) for mentsu in shuntsu_list]
+
+    # 面子の種類ごとにカウントする
+    shuntsu_counter = collections.Counter(shuntsu_tuple)
+
+    # 2で割った時の値(整数部分)を見ることでペア数をカウントする
+    pair_count = sum(mentsu_count // 2 for mentsu_count in shuntsu_counter.values())
+
+    if pair_count == 2:
         return "二盃口"
-    # 一盃口の判定
-    elif len(shuntsu_list) - len(finish_hand) == 1:
+    elif pair_count == 1:
         return "一盃口"
     else:
-        return None
+        None
 
 
 
