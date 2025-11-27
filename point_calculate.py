@@ -1,4 +1,5 @@
 import jaconv
+import sys
 
 import helper
 import const
@@ -347,9 +348,9 @@ def main_calc_process (situation_input):
         daten = str(calc_dict["yakuman"]).translate(num_to_kanji) + "倍役満"
     elif (max_point == 8000):
         if (max_calc_dict["yakuman"] == 0):
-            daten = "役満"
-        else:
             daten = "数え役満"
+        else:
+            daten = "役満"
     elif (max_point == 6000):
         daten = "三倍満"
     elif (max_point == 4000):
@@ -358,6 +359,9 @@ def main_calc_process (situation_input):
         daten = "跳満"
     elif (max_point == 2000):
         daten = "満貫"
+    elif (max_point == 0):
+        print("役がありませんでした")
+        sys.exit()
 
     if (situation_input["agari_situation"] == "tsumo"): # ツモ
         payment_child = 0
