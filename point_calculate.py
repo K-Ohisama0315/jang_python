@@ -334,13 +334,11 @@ def main_calc_process (situation_input):
 
         basic_point = point_calc(calc_dict)
 
-        if (max_point <= basic_point):
-            if (max_calc_dict["han"] <= calc_dict["han"]):
-                if (max_calc_dict["fu"] <= calc_dict["fu"]):
-                    max_point = basic_point
-                    max_yaku_set.clear()
-                    max_yaku_set = yaku_set.copy()
-                    max_calc_dict = calc_dict.copy()
+        if (max_point, max_calc_dict["han"], max_calc_dict["fu"]) < (basic_point, calc_dict["han"], calc_dict["fu"]):
+            max_point = basic_point
+            max_yaku_set.clear()
+            max_yaku_set = yaku_set.copy()
+            max_calc_dict = calc_dict.copy()
 
     if (max_point > 8000):
         daten = str(calc_dict["yakuman"]).translate(num_to_kanji) + "倍役満"
