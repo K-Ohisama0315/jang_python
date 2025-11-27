@@ -399,6 +399,7 @@ def main_calc_process (situation_input):
 
     a = [1,2,3]
     
+    # 手牌表示の工夫
     hand_tiles = situation_input["hand_tiles"].copy()
     hand_tiles = [const.tiles[tile] for tile in hand_tiles]
     hand_tiles.sort()
@@ -406,9 +407,19 @@ def main_calc_process (situation_input):
     hand_tiles.remove(situation_input["agari_tile"])
     call_tiles = [call_tile["mentsu"] for call_tile in situation_input["call_tiles"]]
 
+    # 役表示の工夫
+    final_yaku_list = []
+    for yaku in const.yaku_sort:
+        if yaku in yaku_set:
+            final_yaku_list.append(yaku)
+    
+    for yaku in max_yaku_set:
+        if "ドラ" in yaku:
+            final_yaku_list.append(yaku)
+
     print(jaconv.alphabet2kata(situation_input["agari_situation"]))
     print(hand_tiles, call_tiles, situation_input["agari_tile"])
     print(result, daten)
     print(max_calc_dict)
-    print(max_yaku_set)
+    print(final_yaku_list)
     return
