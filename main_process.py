@@ -1,4 +1,5 @@
 from typing import TypedDict, List
+import sys
 
 from agari_pattern import agari_hands
 from point_calculate import main_calc_process
@@ -31,18 +32,18 @@ class SituationInput(TypedDict):
     formed_calls: List[List[str]]   # 鳴き牌(暗槓抜き)
 
 # 暫定値(立直、一発、二盃口、)
-riichi = 1
-agari_situation = "ron"
+riichi = 0
+agari_situation = "tsumo"
 last_tsumo = False
 ippatsu = False
 rinshan = False
 chankan = False
 jikaze = "south"
 bakaze = "east"
-agari_tile = "red"
-dora_tiles = ["north"]
-hand_tiles = ["2p", "3p", "4p", "3s", "4s", "5s", "red"]
-call_tiles = [{"calling": "an_kan", "mentsu": [["1m", "1m", "1m", "1m"], ["9m", "9m", "9m", "9m"]]}]
+agari_tile = "2m"
+dora_tiles = ["8s", "white"]
+hand_tiles = ["2m", "2m", "2m", "2m", "4m", "4m", "3p", "3p", "4p", "4p", "4p", "4p", "8s", "8s"]
+call_tiles = []
 
 situation_input:SituationInput = {
     "riichi": riichi,
@@ -64,6 +65,9 @@ situation_input:SituationInput = {
 }
 
 agari_hands.main_agari_process(situation_input)
+if not situation_input["formed_hands"]:
+    print("アガリ形が存在しませんでした")
+    sys.exit()
 
 situation_input["menzen"] = not situation_input["formed_calls"]
 
