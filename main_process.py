@@ -26,6 +26,7 @@ class SituationInput(TypedDict):
     bakaze: str	                    # 場風(east, south, west, north)
     agari_tile: str			        # アガリ牌
     dora_tiles: List[str]	        # ドラ牌
+    red_dora_tiles: int             # 赤ドラの数
     hand_tiles: List[str]	        # 手牌
     formed_hands: FormedHands       # アガリ形
     call_tiles: List[CallTiles]		# 鳴き牌
@@ -57,12 +58,17 @@ situation_input:SituationInput = {
     "bakaze": bakaze,
     "agari_tile": agari_tile,
     "dora_tiles": dora_tiles, 
+    "red_dora_tiles":red_dora_tiles,
     "hand_tiles": hand_tiles, 
     "formed_hands": [],
     "call_tiles": call_tiles,
     "formed_calls": []
 
 }
+
+if situation_input["agari_tile"] in situation_input["hand_tiles"]:
+    print("手牌にアガリ牌が含まれていません")
+    sys.exit()
 
 agari_hands.main_agari_process(situation_input)
 if not situation_input["formed_hands"]:
