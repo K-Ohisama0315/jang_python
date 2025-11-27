@@ -66,7 +66,7 @@ situation_input:SituationInput = {
 
 }
 
-if situation_input["agari_tile"] in situation_input["hand_tiles"]:
+if (not situation_input["agari_tile"] in situation_input["hand_tiles"]):
     print("手牌にアガリ牌が含まれていません")
     sys.exit()
 
