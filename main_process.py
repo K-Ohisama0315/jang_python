@@ -32,17 +32,17 @@ class SituationInput(TypedDict):
     formed_calls: List[List[str]]   # 鳴き牌(暗槓抜き)
 
 # 暫定値(立直、一発、二盃口、)
-riichi = 0
-agari_situation = "tsumo"
+riichi = 1
+agari_situation = "ron"
 last_tsumo = False
-ippatsu = False
+ippatsu = True
 rinshan = False
 chankan = False
-jikaze = "south"
+jikaze = "east"
 bakaze = "east"
-agari_tile = "2m"
-dora_tiles = ["8s", "white"]
-hand_tiles = ["2m", "2m", "2m", "2m", "4m", "4m", "3p", "3p", "4p", "4p", "4p", "4p", "8s", "8s"]
+agari_tile = "2s"
+dora_tiles = ["north", "west"]
+hand_tiles = ["3m", "4m", "5m", "6p", "7p", "8p", "2s", "3s", "4s", "6s", "7s", "8s", "5p", "5p"]
 call_tiles = []
 
 situation_input:SituationInput = {

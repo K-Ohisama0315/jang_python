@@ -131,6 +131,9 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
 
     if (is_pinfu):
         yaku_set.add("平和")
+        # 喰い平和ロンは30符固定
+        if (situation_input["agari_situation"] == "ron" and situation_input["formed_calls"]):
+            calc_dict["fu"] = 30
 
     #1の位を切り上げる
     calc_dict["fu"] = helper.ceil(calc_dict["fu"], 1)
@@ -343,7 +346,7 @@ def main_calc_process (situation_input):
     if (max_point > 8000):
         daten = str(calc_dict["yakuman"]).translate(num_to_kanji) + "倍役満"
     elif (max_point == 8000):
-        if (not max_calc_dict["yakuman"]):
+        if (max_calc_dict["yakuman"] == 0):
             daten = "役満"
         else:
             daten = "数え役満"
