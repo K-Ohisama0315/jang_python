@@ -359,7 +359,8 @@ def main_calc_process (situation_input):
         daten = "跳満"
     elif (max_point == 2000):
         daten = "満貫"
-    elif (max_point == 0):
+
+    if (max_calc_dict["yakuman"] == 0 and max_calc_dict["han"] == 0):
         print("役がありませんでした")
         sys.exit()
 
