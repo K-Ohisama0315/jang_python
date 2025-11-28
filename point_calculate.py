@@ -132,9 +132,10 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
 
     if (is_pinfu):
         yaku_set.add("平和")
-        # 喰い平和ロンは30符固定
-        if (situation_input["agari_situation"] == "ron" and situation_input["formed_calls"]):
-            calc_dict["fu"] = 30
+    
+    # 喰い平和ロンは30符固定
+    if (situation_input["agari_situation"] == "ron" and situation_input["formed_calls"] and calc_dict["fu"] == 20):
+        calc_dict["fu"] = 30
 
     #1の位を切り上げる
     calc_dict["fu"] = helper.ceil(calc_dict["fu"], 1)
