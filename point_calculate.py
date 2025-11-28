@@ -227,7 +227,7 @@ def han_calc_general(situation_input, yaku_set) -> int:
 def han_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     # 役満判定
     yakuman = ("清老頭","九蓮宝燈","大三元","小四喜","国士無双","緑一色","字一色","四暗刻","四槓子")
-    double_yakuman = ("純正九蓮宝燈","大四喜","国士無双十三面待ち","四暗刻単騎待ち")
+    double_yakuman = ("純正九蓮宝燈","大四喜","国士無双十三面待ち","四暗刻単騎")
     
     yaku_set.add(check_chin_routou(situation_input["hand_tiles"], situation_input["formed_calls"]))
     yaku_set.add(check_chuuren_poutou(formed_hand["hand"][0], situation_input["menzen"], situation_input["agari_tile"]))
