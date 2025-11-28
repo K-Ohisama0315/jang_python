@@ -167,7 +167,7 @@ def han_calc_general(situation_input, yaku_set) -> int:
     # 面前清自摸和の場合
     if situation_input["menzen"] and situation_input["agari_situation"] == "tsumo":
         han += 1
-        yaku_set.add("面前清自摸和")
+        yaku_set.add("門前清自摸和")
     
     # 槍槓の場合
     # 面前清自摸和と槍槓がどちらもTrueの場合、面前清自摸和を優先する
@@ -189,7 +189,7 @@ def han_calc_general(situation_input, yaku_set) -> int:
     # 河底撈魚の場合
     if situation_input["last_tsumo"] and situation_input["agari_situation"] == "ron":
         han += 1
-        yaku_set.add("海底摸月")
+        yaku_set.add("河底撈魚")
 
     # 一発の場合(嶺上開花と一発は共存しない)
     if situation_input["ippatsu"] and not situation_input["rinshan"]:
