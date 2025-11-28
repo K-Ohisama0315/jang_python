@@ -29,7 +29,7 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
     is_pinfu = True
 
     # 先頭行に牌が14枚ある場合は特殊アガリ(国士無双、九蓮宝燈、七対子)なのでリターン
-    if (len(formed_hand["hand"][0]) == 14):
+    if len(formed_hand["hand"][0]) == 14:
         # 七対子は25符固定
         if (check_chiitoitsu(formed_hand["hand"][0], situation_input["menzen"])):
             calc_dict["fu"] = 25
@@ -101,12 +101,20 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
         calc_dict["fu"] += fu_work * yaochu_bonus
 
     # 雀頭が役牌の場合
-    if (formed_hand["head"][0] in ("white", "green", "red", situation_input["jikaze"], situation_input["bakaze"])):
+    if formed_hand["head"][0] in ("white", "green", "red", situation_input["jikaze"], situation_input["bakaze"]):
         # 平和は成立しない
         is_pinfu = False
 
-        # 2符追加
-        calc_dict["fu"] += 2 
+        if formed_hand["head"][0] in ("white", "green", "red"):
+            # 三元牌の場合2符追加
+            calc_dict["fu"] += 2 
+        else:
+            if formed_hand["head"][0] == situation_input["jikaze"]:
+                # 自風牌の場合2符追加
+                calc_dict["fu"] += 2
+            if formed_hand["head"][0] == situation_input["bakaze"]:
+                # 場風牌の場合2符追加
+                calc_dict["fu"] += 2
 
     # 単騎待ち、嵌張待ち、辺張待ちの場合
     if formed_hand["wait"] in ("tanki", "kanchan", "penchan"):
@@ -130,11 +138,11 @@ def fu_calc(formed_hand, situation_input, yaku_set, calc_dict) -> int:
         if (is_pinfu):
             calc_dict["fu"] = 20
 
-    if (is_pinfu):
+    if is_pinfu:
         yaku_set.add("平和")
     
     # 喰い平和ロンは30符固定
-    if (situation_input["agari_situation"] == "ron" and situation_input["formed_calls"] and calc_dict["fu"] == 20):
+    if situation_input["agari_situation"] == "ron" and situation_input["formed_calls"] and calc_dict["fu"] == 20:
         calc_dict["fu"] = 30
 
     #1の位を切り上げる
