@@ -32,8 +32,38 @@ class SituationInput(TypedDict):
     call_tiles: List[CallTiles]		# 鳴き牌
     formed_calls: List[List[str]]   # 鳴き牌(暗槓抜き)
 
-# 暫定値(立直、一発、二盃口、)
-riichi = 1
+# デモ用（タンヤオのみ）
+# riichi = 0
+# agari_situation = "ron"
+# last_tsumo = False
+# ippatsu = False
+# rinshan = False
+# chankan = False
+# jikaze = "east"
+# bakaze = "east"
+# agari_tile = "7m"
+# dora_tiles = ["1s",]
+# red_dora_tiles = 0
+# hand_tiles = ["8s", "8s", "2s", "3s", "4s", "4p", "5p", "6p", "2m", "3m", "4m", "7m", "7m", "7m"]
+# call_tiles = []
+
+# デモ用（リーヅモタンヤオドラ２）
+# riichi = 1
+# agari_situation = "tsumo"
+# last_tsumo = False
+# ippatsu = False
+# rinshan = False
+# chankan = False
+# jikaze = "east"
+# bakaze = "east"
+# agari_tile = "7m"
+# dora_tiles = ["8s", "1m"]
+# red_dora_tiles = 0
+# hand_tiles = ["8s", "8s", "2s", "3s", "4s", "4p", "5p", "6p", "2m", "3m", "4m", "7m", "7m", "7m"]
+# call_tiles = []
+
+# デモ用（国士無双）
+riichi = 0
 agari_situation = "ron"
 last_tsumo = False
 ippatsu = False
@@ -41,11 +71,26 @@ rinshan = False
 chankan = False
 jikaze = "east"
 bakaze = "east"
-agari_tile = "9s"
-dora_tiles = ["5s", "2m"]
+agari_tile = "red"
+dora_tiles = ["1s",]
 red_dora_tiles = 0
-hand_tiles = ["1p", "1p", "1p", "2p", "2p", "2p", "3p", "3p", "3p", "9s", "9s", "9s", "1m", "1m"]
+hand_tiles = ["1s", "9s", "1m", "9m", "1p", "9p", "east", "west", "south", "north", "white", "green", "red", "1m"]
 call_tiles = []
+
+# 6倍役満
+# riichi = 0
+# agari_situation = "tsumo"
+# last_tsumo = False
+# ippatsu = False
+# rinshan = False
+# chankan = False
+# jikaze = "east"
+# bakaze = "east"
+# agari_tile = "white"
+# dora_tiles = ["1s",]
+# red_dora_tiles = 0
+# hand_tiles = ["white","white"]  # 字一色、四暗刻単騎、大四喜、四槓子
+# call_tiles = [{"calling":"an_kan", "mentsu": [["east", "east", "east", "east"],["south", "south", "south", "south"],["west", "west", "west", "west"],["north", "north", "north", "north"]]},]
 
 situation_input:SituationInput = {
     "riichi": riichi,
